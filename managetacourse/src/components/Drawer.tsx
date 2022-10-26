@@ -1,26 +1,55 @@
 import React, { useState } from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { View, Text } from "react-native";
+import { Drawer as PaperDrawer, Text } from "react-native-paper";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+} from "@react-navigation/drawer";
 import Home from "../HomeView";
-import TagHomeView from "../TagEditionView/TagEditionView";
+import TagView from "../TagEditionView";
+import { createStackNavigator } from "@react-navigation/stack";
+import { RootStackParamList } from "../main";
+import { Header } from "./Header";
+import { NavigationContainer } from "@react-navigation/native";
 
 const Drawer = createDrawerNavigator();
 
-function DrawerContent() {
+const DrawerContent = (props: any) => {
+  const [active, setActive] = useState("");
   return (
-    <View>
-      <Text>Here is the drawer content</Text>
-    </View>
+    <DrawerContentScrollView {...props}>
+      <PaperDrawer.Section>
+        <PaperDrawer.Item label="Accueil" />
+        <PaperDrawer.Item label="Tags" />
+      </PaperDrawer.Section>
+    </DrawerContentScrollView>
   );
-}
+};
 
 export const RootNavigator = () => {
-  const [active, setActive] = useState("");
-
   return (
-    <Drawer.Navigator drawerContent={() => <DrawerContent />}>
-      <Drawer.Screen name="Accueil" component={Home} />
-      <Drawer.Screen name="Tags" component={TagHomeView} />
-    </Drawer.Navigator>
+    <NavigationContainer>
+      <Drawer.Navigator>
+        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Tags" component={TagView} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+export const DrawerStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        header: ({ navigation, options, route }) => (
+          <Header navigation={navigation} options={options} route={route} />
+        ),
+      }}
+    >
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Tags" component={TagView} />
+    </Stack.Navigator>
   );
 };
