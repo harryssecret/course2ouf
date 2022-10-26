@@ -1,15 +1,12 @@
-import { MD3LightTheme as DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { NavigationContainer } from '@react-navigation/native';
-import Main from './src/App';
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-const theme = {...DefaultTheme, colors: {...DefaultTheme.colors, primary: 'red', secondary: '#e0f7fa'}};
+import Main from "./src/main";
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-      <Main/>
-      </NavigationContainer>
-    </PaperProvider>
+    <SafeAreaProvider>
+      <Main />
+    </SafeAreaProvider>
   );
 }
