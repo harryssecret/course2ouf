@@ -15,6 +15,7 @@ import { StackHeaderProps } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
 import { Appbar } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
+import { getHeaderTitle } from "@react-navigation/elements";
 
 const Drawer = createDrawerNavigator();
 
@@ -32,12 +33,10 @@ const DrawerContent = (props: any) => {
 
 export const RootNavigator = () => {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator drawerContent={() => <DrawerContent />}>
-        <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="Tags" component={TagView} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Drawer.Navigator drawerContent={() => <DrawerContent />}>
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Tags" component={TagView} />
+    </Drawer.Navigator>
   );
 };
 
@@ -45,26 +44,25 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 export const DrawerStack = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Accueil"
-        screenOptions={{
-          header: (props) => <Header {...props} />,
-        }}
-      >
-        <Stack.Screen name="Accueil" component={Home} />
-        <Stack.Screen name="Tags" component={TagView} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      initialRouteName="Accueil"
+      screenOptions={{
+        header: (props) => <Header {...props} />,
+        headerMode: "screen",
+      }}
+    >
+      <Stack.Screen name="Accueil" component={Home} />
+      <Stack.Screen name="Tags" component={TagView} />
+    </Stack.Navigator>
   );
 };
 
-export const Header = ({ route, options, navigation }: any) => {
+export const Header = ({ route, options, navigation }: StackHeaderProps) => {
+  const title = getHeaderTitle(options, route.name);
   return (
     <Appbar.Header>
-      <TouchableOpacity
-        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-      ></TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation}></TouchableOpacity>
+      <Appbar.Content title={title} />
     </Appbar.Header>
   );
 };

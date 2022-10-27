@@ -1,4 +1,5 @@
 import {
+  adaptNavigationTheme,
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
@@ -18,10 +19,16 @@ export type RootStackParamList = {
   Tags: undefined;
 };
 
+type AppTheme = typeof theme;
+
+export const { LightTheme } = adaptNavigationTheme({ light: theme });
+
 export default function Main() {
   return (
     <PaperProvider theme={theme}>
-      <RootNavigator />
+      <NavigationContainer theme={LightTheme}>
+        <RootNavigator />
+      </NavigationContainer>
       <StatusBar style="auto" />
     </PaperProvider>
   );
