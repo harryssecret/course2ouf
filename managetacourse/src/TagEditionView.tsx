@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { View } from "react-native";
-import { BottomNavigation, Text } from "react-native-paper";
+import { BottomNavigation, Button, Text } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import NfcManager, { NfcTech } from "react-native-nfc-manager";
+
+NfcManager.start();
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -54,11 +57,26 @@ const HistoryTagRoute = () => {
   );
 };
 
-const ScanTagRoute = () => (
-  <View>
-    <Text>Scanner des tags</Text>
-  </View>
-);
+const ScanTagRoute = () => {
+  const [error, setError] = useState(false);
+  const ReadNdef = async () => {
+    try {
+      await NfcManager.requestTechnology(NfcTech.Ndef);
+      const tag = await NfcManager.getTag();
+      return tag;
+    } catch (e) {
+      setError(true);
+    } finally {
+      NfcManager.cancelTechnologyRequest();
+    }
+  };
+  return (
+    <View>
+      <Text>Scanner des tags</Text>
+      <Button onPress={ReadNdef}>Lire</Button>
+    </View>
+  );
+};
 
 const WriteTagRoute = () => (
   <View>
