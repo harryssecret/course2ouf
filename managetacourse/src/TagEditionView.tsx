@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 import { BottomNavigation, Button, Text } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -57,23 +57,23 @@ const HistoryTagRoute = () => {
   );
 };
 
+async function ReadTag() {
+  try {
+    await NfcManager.requestTechnology(NfcTech.Ndef);
+    const tag = await NfcManager.getTag();
+    return tag;
+  } catch (e) {
+    ToastAndroid.show("Erreur lors de la lecture du tag", ToastAndroid.SHORT);
+  } finally {
+    NfcManager.cancelTechnologyRequest();
+  }
+}
+
 const ScanTagRoute = () => {
-  const [error, setError] = useState(false);
-  const ReadNdef = async () => {
-    try {
-      await NfcManager.requestTechnology(NfcTech.Ndef);
-      const tag = await NfcManager.getTag();
-      return tag;
-    } catch (e) {
-      setError(true);
-    } finally {
-      NfcManager.cancelTechnologyRequest();
-    }
-  };
   return (
     <View>
       <Text>Scanner des tags</Text>
-      <Button onPress={ReadNdef}>Lire</Button>
+      <Button onPress={ReadTag}>Lire</Button>
     </View>
   );
 };
