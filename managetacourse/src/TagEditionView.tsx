@@ -78,6 +78,23 @@ const ScanTagRoute = () => {
   );
 };
 
+type NfcTagProps = {
+  name: string;
+};
+
+async function writeData({ name }: NfcTagProps) {
+  try {
+    await NfcManager.requestTechnology(NfcTech.Ndef);
+  } catch (e) {
+    ToastAndroid.show(
+      `Erreur lors de l'écriture du tag: ${e}`,
+      ToastAndroid.SHORT
+    );
+  }
+}
+
+const TagCardComponent = ({ name }: NfcTagProps) => {};
+
 const WriteTagRoute = () => (
   <View>
     <Text>Ecrire sur des tags</Text>
