@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { ToastAndroid, View } from "react-native";
-import { BottomNavigation, Button, Text } from "react-native-paper";
+import { BottomNavigation, Button, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import NfcManager, { NfcTech } from "react-native-nfc-manager";
+import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
 
 NfcManager.start();
+
+function TagView(): JSX.Element {
+  return <BottomTagNavigator />;
+}
+
+export default withTheme(TagView);
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -45,10 +51,6 @@ const BottomTagNavigator = () => (
   </Tab.Navigator>
 );
 
-export default function TagView(): JSX.Element {
-  return <BottomTagNavigator />;
-}
-
 const HistoryTagRoute = () => {
   return (
     <View>
@@ -79,24 +81,30 @@ const ScanTagRoute = () => {
 };
 
 type NfcTagProps = {
-  name: string;
+  userId: string;
 };
 
-async function writeData({ name }: NfcTagProps) {
+async function writeData({ userId }: NfcTagProps) {
   try {
     await NfcManager.requestTechnology(NfcTech.Ndef);
+    const data = Ndef.encodeMessage([Ndef.textRecord(userId)]);
+
+    if (data) {
+      await NfcManager.ndefHandler.writeNdefMessage(data);
+    }
   } catch (e) {
     ToastAndroid.show(
       `Erreur lors de l'écriture du tag: ${e}`,
       ToastAndroid.SHORT
     );
+  } finally {
+    NfcManager.cancelTechnologyRequest();
   }
 }
-
-const TagCardComponent = ({ name }: NfcTagProps) => {};
 
 const WriteTagRoute = () => (
   <View>
     <Text>Ecrire sur des tags</Text>
+    <Button>Ecrire</Button>
   </View>
 );
