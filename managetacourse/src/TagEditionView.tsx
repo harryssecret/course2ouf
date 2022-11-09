@@ -84,7 +84,7 @@ type NfcTagProps = {
   userId: string;
 };
 
-async function writeData({ userId }: NfcTagProps) {
+async function writeDataNdef({ userId }: NfcTagProps) {
   try {
     await NfcManager.requestTechnology(NfcTech.Ndef);
     const data = Ndef.encodeMessage([Ndef.textRecord(userId)]);
@@ -95,6 +95,19 @@ async function writeData({ userId }: NfcTagProps) {
   } catch (e) {
     ToastAndroid.show(
       `Erreur lors de l'écriture du tag: ${e}`,
+      ToastAndroid.SHORT
+    );
+  } finally {
+    NfcManager.cancelTechnologyRequest();
+  }
+}
+
+async function writeDataMifare({ userId }: NfcTagProps) {
+  try {
+    await NfcManager.requestTechnology(NfcTech.MifareClassic);
+  } catch (error) {
+    ToastAndroid.show(
+      `Erreur lors de l'écriture du tag: ${error}`,
       ToastAndroid.SHORT
     );
   } finally {
