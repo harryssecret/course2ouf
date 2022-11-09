@@ -1,4 +1,4 @@
-package com.anonymous.managetacourse;
+package me.course2ouf.managetacourse;
 
 import android.os.Build;
 import android.os.Bundle;

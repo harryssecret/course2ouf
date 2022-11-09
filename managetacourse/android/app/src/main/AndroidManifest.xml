@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.anonymous.managetacourse">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="me.course2ouf.managetacourse">
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.NFC"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -27,7 +27,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.anonymous.managetacourse"/>
+        <data android:scheme="me.course2ouf.managetacourse"/>
         <data android:scheme="exp+managetacourse"/>
       </intent-filter>
     </activity>

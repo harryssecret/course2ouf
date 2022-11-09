@@ -1,4 +1,4 @@
-package com.anonymous.managetacourse.newarchitecture.components;
+package me.course2ouf.managetacourse.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

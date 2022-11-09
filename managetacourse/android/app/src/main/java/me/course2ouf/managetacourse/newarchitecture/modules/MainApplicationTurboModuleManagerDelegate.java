@@ -1,4 +1,4 @@
-package com.anonymous.managetacourse.newarchitecture.modules;
+package me.course2ouf.managetacourse.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

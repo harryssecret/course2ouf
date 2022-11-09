@@ -1,4 +1,4 @@
-package com.anonymous.managetacourse.newarchitecture;
+package me.course2ouf.managetacourse.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.anonymous.managetacourse.BuildConfig;
-import com.anonymous.managetacourse.newarchitecture.components.MainComponentsRegistry;
-import com.anonymous.managetacourse.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import me.course2ouf.managetacourse.BuildConfig;
+import me.course2ouf.managetacourse.newarchitecture.components.MainComponentsRegistry;
+import me.course2ouf.managetacourse.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
