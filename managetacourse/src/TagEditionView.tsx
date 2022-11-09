@@ -59,12 +59,27 @@ const HistoryTagRoute = () => {
   );
 };
 
-async function ReadTag() {
+async function ReadTagNdef() {
   try {
     await NfcManager.requestTechnology(NfcTech.Ndef);
     const tag = await NfcManager.getTag();
     return tag;
   } catch (e) {
+    console.log(e);
+    ToastAndroid.show("Erreur lors de la lecture du tag", ToastAndroid.SHORT);
+  } finally {
+    NfcManager.cancelTechnologyRequest();
+  }
+}
+
+async function ReadTagMifare() {
+  try {
+    await NfcManager.requestTechnology(NfcTech.MifareClassic);
+    const tag = await NfcManager.getTag();
+    console.log(tag);
+    return tag;
+  } catch (e) {
+    console.log(e);
     ToastAndroid.show("Erreur lors de la lecture du tag", ToastAndroid.SHORT);
   } finally {
     NfcManager.cancelTechnologyRequest();
@@ -75,7 +90,7 @@ const ScanTagRoute = () => {
   return (
     <View>
       <Text>Scanner des tags</Text>
-      <Button onPress={ReadTag}>Lire</Button>
+      <Button onPress={ReadTagMifare}>Lire</Button>
     </View>
   );
 };
@@ -118,6 +133,6 @@ async function writeDataMifare({ userId }: NfcTagProps) {
 const WriteTagRoute = () => (
   <View>
     <Text>Ecrire sur des tags</Text>
-    <Button>Ecrire</Button>
+    <Button onPress={ReadTagMifare}>Ecrire</Button>
   </View>
 );
