@@ -82,13 +82,13 @@ async function ReadTagMifare() {
       )
       .then(async () => {
         return await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
-          0,
+          1,
           [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
         );
       })
       .then(async (data) => {
         await NfcManager.mifareClassicHandlerAndroid
-          .mifareClassicSectorToBlock(6)
+          .mifareClassicSectorToBlock(1)
           .then((data) => console.log(data));
       })
       .catch((error) => console.error(error));
@@ -131,9 +131,32 @@ async function writeDataNdef({ userId }: NfcTagProps) {
   }
 }
 
+function encodeTagData(text: string) {
+  const MIFARE_BLOCK_SIZE = 16;
+  let block = Array(MIFARE_BLOCK_SIZE).fill(0);
+
+  for (let i = 0; i < text.length; i++) {
+    block[i] = text.charCodeAt(i);
+  }
+  return block;
+}
+
 async function writeDataMifare({ userId }: NfcTagProps) {
   try {
-    await NfcManager.requestTechnology(NfcTech.MifareClassic);
+    await NfcManager.requestTechnology(NfcTech.MifareClassic)
+      .then(
+        async () =>
+          await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
+            1,
+            [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+          )
+      )
+      .then()
+      .then(async () =>
+        NfcManager.mifareClassicHandlerAndroid.mifareClassicWriteBlock(
+          encodeTagData(userId)
+        )
+      );
   } catch (error) {
     ToastAndroid.show(
       `Erreur lors de l'écriture du tag: ${error}`,
