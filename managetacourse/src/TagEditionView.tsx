@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { ToastAndroid, View } from "react-native";
-import { BottomNavigation, Button, Text, withTheme } from "react-native-paper";
+import { Button, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
@@ -74,10 +74,24 @@ async function ReadTagNdef() {
 
 async function ReadTagMifare() {
   try {
-    await NfcManager.requestTechnology(NfcTech.MifareClassic);
-    const tag = await NfcManager.getTag();
-    console.log(tag);
-    return tag;
+    await NfcManager.requestTechnology(NfcTech.MifareClassic)
+      .then(() => NfcManager.getTag())
+      .then(
+        async () =>
+          await NfcManager.mifareClassicHandlerAndroid.mifareClassicGetSectorCount()
+      )
+      .then(async () => {
+        return await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
+          0,
+          [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+        );
+      })
+      .then(async (data) => {
+        await NfcManager.mifareClassicHandlerAndroid
+          .mifareClassicSectorToBlock(6)
+          .then((data) => console.log(data));
+      })
+      .catch((error) => console.error(error));
   } catch (e) {
     console.log(e);
     ToastAndroid.show("Erreur lors de la lecture du tag", ToastAndroid.SHORT);
