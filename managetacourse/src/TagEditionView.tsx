@@ -98,6 +98,7 @@ async function ReadTagMifare() {
 
     const tag = await NfcManager.getTag();
     ToastAndroid.show(`Tag trouvé : ${tag?.id}`, ToastAndroid.SHORT);
+    return tag;
   } catch (e) {
     console.log(e);
     ToastAndroid.show("Erreur lors de la lecture du tag", ToastAndroid.SHORT);
@@ -107,30 +108,59 @@ async function ReadTagMifare() {
 }
 
 type ScannedTagInfosProps = {
-  nfcCardId: string;
-  arrivalTime: Date;
+  nfcCardId: string | undefined;
+  arrivalTime: number;
 };
 
-const ScannedTagInfoCard = ({
+/*
+ * @todo add a route to the details of the runner
+ */
+const ScannedTagInfoListElement = ({
   nfcCardId,
   arrivalTime,
 }: ScannedTagInfosProps) => {
-  const formattedArrivalTime = `Arrivée de ${nfcCardId}`;
+  return <List.Item title={nfcCardId} />;
+};
+
+/*
+ * @todo Add a list of the runners who didn't finished the race yet
+ */
+const ScannedTagList = (tagList: Array<ScannedTagInfosProps>) => {
   return (
+    <List.Section title="Arrivées">
+      <List.Accordion title="Dernières arrivées">
+        {tagList.map((props) => (
+          <ScannedTagInfoListElement {...props} />
+        ))}
+      </List.Accordion>
+    </List.Section>
   );
 };
 
 const ScanTagRoute = () => {
-  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [isChronoStarted, setIsChronoStarted] = useState<boolean>(false);
+
   const [stopTime, setStopTime] = useState<Date>(new Date());
+  const [scannedTags, setScannedTags] = useState<Array<object>>([]);
 
   const startTimer = async () => {
-    await ReadTagMifare().then(() => stopTimer());
+    const startTime = new Date();
+    setIsChronoStarted(true);
+    while (isChronoStarted) {
+      const tag = await ReadTagMifare();
+      if (tag) {
+        const currentTime = new Date();
+        const arrivalTime = currentTime.getTime() - startTime.getTime();
+        const newScannedTag: ScannedTagInfosProps = {
+          nfcCardId: tag?.id,
+          arrivalTime,
+        };
+      }
+    }
   };
 
   const stopTimer = () => {
-    setStopTime(new Date());
-    const endTime = stopTime?.getTime() - startTime?.getTime();
+    //TODO
   };
 
   return (
