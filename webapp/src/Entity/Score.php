@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ScoreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: ScoreRepository::class)]
 class Score
 {
