@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { ToastAndroid, View } from "react-native";
-import { Button, Text, withTheme } from "react-native-paper";
+import {
+  Button,
+  Card,
+  List,
+  Paragraph,
+  Text,
+  Title,
+  withTheme,
+} from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
@@ -75,23 +83,21 @@ async function ReadTagNdef() {
 async function ReadTagMifare() {
   try {
     await NfcManager.requestTechnology(NfcTech.MifareClassic)
-      .then(() => NfcManager.getTag())
-      .then(
-        async () =>
-          await NfcManager.mifareClassicHandlerAndroid.mifareClassicGetSectorCount()
-      )
       .then(async () => {
         return await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
-          1,
+          0,
           [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
         );
       })
       .then(async (data) => {
         await NfcManager.mifareClassicHandlerAndroid
-          .mifareClassicSectorToBlock(1)
+          .mifareClassicSectorToBlock(0)
           .then((data) => console.log(data));
       })
       .catch((error) => console.error(error));
+
+    const tag = await NfcManager.getTag();
+    ToastAndroid.show(`Tag trouvé : ${tag?.id}`, ToastAndroid.SHORT);
   } catch (e) {
     console.log(e);
     ToastAndroid.show("Erreur lors de la lecture du tag", ToastAndroid.SHORT);
@@ -100,11 +106,38 @@ async function ReadTagMifare() {
   }
 }
 
+type ScannedTagInfosProps = {
+  nfcCardId: string;
+  arrivalTime: Date;
+};
+
+const ScannedTagInfoCard = ({
+  nfcCardId,
+  arrivalTime,
+}: ScannedTagInfosProps) => {
+  const formattedArrivalTime = `Arrivée de ${nfcCardId}`;
+  return (
+  );
+};
+
 const ScanTagRoute = () => {
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [stopTime, setStopTime] = useState<Date>(new Date());
+
+  const startTimer = async () => {
+    await ReadTagMifare().then(() => stopTimer());
+  };
+
+  const stopTimer = () => {
+    setStopTime(new Date());
+    const endTime = stopTime?.getTime() - startTime?.getTime();
+  };
+
   return (
     <View>
       <Text>Scanner des tags</Text>
-      <Button onPress={ReadTagMifare}>Lire</Button>
+      <Button onPress={startTimer}>Démarrer le timer</Button>
+      <Button onPress={ReadTagMifare}>Lancer la lecture</Button>
     </View>
   );
 };
@@ -143,20 +176,13 @@ function encodeTagData(text: string) {
 
 async function writeDataMifare({ userId }: NfcTagProps) {
   try {
-    await NfcManager.requestTechnology(NfcTech.MifareClassic)
-      .then(
-        async () =>
-          await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
-            1,
-            [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
-          )
-      )
-      .then()
-      .then(async () =>
-        NfcManager.mifareClassicHandlerAndroid.mifareClassicWriteBlock(
-          encodeTagData(userId)
+    await NfcManager.requestTechnology(NfcTech.MifareClassic).then(
+      async () =>
+        await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
+          1,
+          [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
         )
-      );
+    );
   } catch (error) {
     ToastAndroid.show(
       `Erreur lors de l'écriture du tag: ${error}`,
