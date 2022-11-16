@@ -11,7 +11,7 @@ import {
 } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
+import NfcManager, { Ndef, NfcEvents, NfcTech } from "react-native-nfc-manager";
 
 NfcManager.start();
 
@@ -119,13 +119,20 @@ const ScannedTagInfoListElement = ({
   nfcCardId,
   arrivalTime,
 }: ScannedTagInfosProps) => {
-  return <List.Item title={nfcCardId} />;
+  const localTime = new Date(arrivalTime);
+  return (
+    <List.Item title={`${nfcCardId}, temps : ${localTime.toTimeString()}`} />
+  );
+};
+
+type ScannedTagListProps = {
+  tagList: Array<ScannedTagInfosProps>;
 };
 
 /*
  * @todo Add a list of the runners who didn't finished the race yet
  */
-const ScannedTagList = (tagList: Array<ScannedTagInfosProps>) => {
+const ScannedTagList = ({ tagList }: ScannedTagListProps) => {
   return (
     <List.Section title="Arrivées">
       <List.Accordion title="Dernières arrivées">
@@ -141,21 +148,22 @@ const ScanTagRoute = () => {
   const [isChronoStarted, setIsChronoStarted] = useState<boolean>(false);
 
   const [stopTime, setStopTime] = useState<Date>(new Date());
-  const [scannedTags, setScannedTags] = useState<Array<object>>([]);
+  const [scannedTags, setScannedTags] = useState<Array<ScannedTagInfosProps>>(
+    []
+  );
 
   const startTimer = async () => {
     const startTime = new Date();
     setIsChronoStarted(true);
-    while (isChronoStarted) {
-      const tag = await ReadTagMifare();
-      if (tag) {
-        const currentTime = new Date();
-        const arrivalTime = currentTime.getTime() - startTime.getTime();
-        const newScannedTag: ScannedTagInfosProps = {
-          nfcCardId: tag?.id,
-          arrivalTime,
-        };
-      }
+    const tag = await ReadTagMifare();
+    if (tag) {
+      const currentTime = new Date();
+      const arrivalTime = currentTime.getTime() - startTime.getTime();
+      const newScannedTag: ScannedTagInfosProps = {
+        nfcCardId: tag?.id,
+        arrivalTime,
+      };
+      setScannedTags((tags) => [...tags, newScannedTag]);
     }
   };
 
@@ -165,9 +173,9 @@ const ScanTagRoute = () => {
 
   return (
     <View>
-      <Text>Scanner des tags</Text>
       <Button onPress={startTimer}>Démarrer le timer</Button>
       <Button onPress={ReadTagMifare}>Lancer la lecture</Button>
+      <ScannedTagList tagList={scannedTags} />
     </View>
   );
 };
