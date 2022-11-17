@@ -27,12 +27,14 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
           onPress={() => {
             props.navigation.navigate("Accueil");
           }}
+          icon="home"
         />
         <PaperDrawer.Item
           label="Tags"
           onPress={() => {
             props.navigation.navigate("Tags");
           }}
+          icon="tag"
         />
       </PaperDrawer.Section>
     </DrawerContentScrollView>
