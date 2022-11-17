@@ -10,10 +10,10 @@ import {
   createStackNavigator,
   StackHeaderProps,
 } from "@react-navigation/stack";
-import { RootStackParamList } from "../main";
+import { RootStackParamList } from "..";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Home from "../HomeView";
-import TagView from "../views/NfcScan/TagEditionView";
+import TagView from "../views/NfcScan";
 
 const Drawer = createDrawerNavigator();
 
