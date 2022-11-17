@@ -5,7 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "plugins": ["react-native-nfc-manager"],
+    "plugins": [
+      "react-native-nfc-manager"
+    ],
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -15,7 +17,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -24,8 +28,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions": ["android.permission.NFC"],
+      "permissions": [
+        "android.permission.NFC"
+      ],
       "package": "me.course2ouf.managetacourse"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3a3c0d6a-b37e-4f0a-b47a-8fae8967a9e9"
+      }
     }
   }
 }
