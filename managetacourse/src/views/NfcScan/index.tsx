@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { ToastAndroid, View, StyleSheet } from "react-native";
-import { Button, List, Text, withTheme } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import { Button, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
+import NfcManager from "react-native-nfc-manager";
 import { ReadTagMifare } from "./tools/scantag";
 
 import { ScannedTagList } from "./components/History/ScannedTagHistory";
@@ -18,7 +18,7 @@ export default withTheme(TagView);
 
 const Tab = createMaterialBottomTabNavigator();
 
-const BottomTagNavigator = () => (
+const BottomTagNavigator = (): JSX.Element => (
   <Tab.Navigator initialRouteName="Lire">
     <Tab.Screen
       name="Lire"
@@ -54,7 +54,7 @@ const BottomTagNavigator = () => (
   </Tab.Navigator>
 );
 
-const HistoryTagRoute = () => {
+const HistoryTagRoute = (): JSX.Element => {
   return (
     <View>
       <Text>Lister les tags</Text>
@@ -67,7 +67,7 @@ type ScannedTagInfosProps = {
   arrivalTime: number;
 };
 
-const ScanTagRoute = () => {
+const ScanTagRoute = (): JSX.Element => {
   const [isChronoStarted, setIsChronoStarted] = useState<boolean>(false);
   const [startRunningTime, setStartRunningTime] = useState<Date>(
     new Date(0, 0, 0)
