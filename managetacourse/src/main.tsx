@@ -15,7 +15,6 @@ import TagView from "./TagEditionView";
 
 const theme = {
   ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, primary: "red", secondary: "#e0f7fa" },
 };
 
 export type RootStackParamList = {
