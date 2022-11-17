@@ -121,7 +121,11 @@ const ScannedTagInfoListElement = ({
 }: ScannedTagInfosProps) => {
   const localTime = new Date(arrivalTime);
   return (
-    <List.Item title={`${nfcCardId}, temps : ${localTime.toTimeString()}`} />
+    <List.Item
+      title={`${nfcCardId}, temps : ${localTime.getHours()}:${
+        localTime.getMinutes
+      }:${localTime.getSeconds()}`}
+    />
   );
 };
 
