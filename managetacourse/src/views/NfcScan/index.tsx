@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { ToastAndroid, View } from "react-native";
+import { ToastAndroid, View, StyleSheet } from "react-native";
 import { Button, List, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
 import { ReadTagMifare } from "./tools/scantag";
+
+import { ScannedTagList } from "./components/History/ScannedTagHistory";
 
 NfcManager.start();
 
@@ -65,42 +67,6 @@ type ScannedTagInfosProps = {
   arrivalTime: number;
 };
 
-/*
- * @todo add a route to the details of the runner
- */
-const ScannedTagInfoListElement = ({
-  nfcCardId,
-  arrivalTime,
-}: ScannedTagInfosProps) => {
-  const localTime = new Date(arrivalTime);
-  return (
-    <List.Item
-      title={`${nfcCardId}, temps : ${localTime.getHours()}:${
-        localTime.getMinutes
-      }:${localTime.getSeconds()}`}
-    />
-  );
-};
-
-type ScannedTagListProps = {
-  tagList: Array<ScannedTagInfosProps>;
-};
-
-/*
- * @todo Add a list of the runners who didn't finished the race yet
- */
-const ScannedTagList = ({ tagList }: ScannedTagListProps) => {
-  return (
-    <List.Section title="Arrivées">
-      <List.Accordion title="Dernières arrivées">
-        {tagList.map((props) => (
-          <ScannedTagInfoListElement {...props} />
-        ))}
-      </List.Accordion>
-    </List.Section>
-  );
-};
-
 const ScanTagRoute = () => {
   const [isChronoStarted, setIsChronoStarted] = useState<boolean>(false);
   const [startRunningTime, setStartRunningTime] = useState<Date>(
@@ -129,14 +95,31 @@ const ScanTagRoute = () => {
     }
   };
 
+  const resetTime = () => {
+    setScannedTags([]);
+    setIsChronoStarted(false);
+  };
+
   return (
     <View>
-      <Button onPress={startTimer}>Démarrer le timer</Button>
-      <Button onPress={scanTag}>Lire un tag</Button>
+      <View style={styles.buttonContainer}>
+        <Button icon="clock-outline" onPress={startTimer} mode="contained">
+          Démarrer le timer
+        </Button>
+        <Button onPress={scanTag}>Lire un tag</Button>
+        <Button onPress={resetTime}>Remettre à zéro</Button>
+      </View>
       <ScannedTagList tagList={scannedTags} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    paddingTop: 24,
+    alignItems: "center",
+  },
+});
 
 const WriteTagRoute = () => (
   <View>
