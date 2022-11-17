@@ -10,8 +10,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { DrawerStack, RootNavigator } from "./components/Drawer";
-import TagView from "./views/NfcScan";
+import { RootNavigator } from "./components/Drawer";
 
 const theme = {
   ...DefaultTheme,
