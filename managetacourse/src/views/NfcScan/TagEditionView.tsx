@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ToastAndroid, View } from "react-native";
-import {
-  Button,
-  Card,
-  List,
-  Paragraph,
-  Text,
-  Title,
-  withTheme,
-} from "react-native-paper";
+import { Button, List, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import NfcManager, { Ndef, NfcEvents, NfcTech } from "react-native-nfc-manager";
+import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
 
 NfcManager.start();
 

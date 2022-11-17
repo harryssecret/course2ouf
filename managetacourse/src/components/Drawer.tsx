@@ -13,7 +13,7 @@ import {
 import { RootStackParamList } from "../main";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Home from "../HomeView";
-import TagView from "../TagEditionView";
+import TagView from "../views/NfcScan/TagEditionView";
 
 const Drawer = createDrawerNavigator();
 
