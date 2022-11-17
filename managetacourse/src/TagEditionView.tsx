@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastAndroid, View } from "react-native";
 import {
   Button,
@@ -146,19 +146,24 @@ const ScannedTagList = ({ tagList }: ScannedTagListProps) => {
 
 const ScanTagRoute = () => {
   const [isChronoStarted, setIsChronoStarted] = useState<boolean>(false);
-
-  const [stopTime, setStopTime] = useState<Date>(new Date());
+  const [startRunningTime, setStartRunningTime] = useState<Date>(
+    new Date(0, 0, 0)
+  );
   const [scannedTags, setScannedTags] = useState<Array<ScannedTagInfosProps>>(
     []
   );
 
   const startTimer = async () => {
     const startTime = new Date();
+    setStartRunningTime(startTime);
     setIsChronoStarted(true);
+  };
+
+  const scanTag = async () => {
     const tag = await ReadTagMifare();
     if (tag) {
       const currentTime = new Date();
-      const arrivalTime = currentTime.getTime() - startTime.getTime();
+      const arrivalTime = currentTime.getTime() - startRunningTime.getTime();
       const newScannedTag: ScannedTagInfosProps = {
         nfcCardId: tag?.id,
         arrivalTime,
@@ -167,14 +172,10 @@ const ScanTagRoute = () => {
     }
   };
 
-  const stopTimer = () => {
-    //TODO
-  };
-
   return (
     <View>
       <Button onPress={startTimer}>Démarrer le timer</Button>
-      <Button onPress={ReadTagMifare}>Lancer la lecture</Button>
+      <Button onPress={scanTag}>Lire un tag</Button>
       <ScannedTagList tagList={scannedTags} />
     </View>
   );
@@ -195,35 +196,6 @@ async function writeDataNdef({ userId }: NfcTagProps) {
   } catch (e) {
     ToastAndroid.show(
       `Erreur lors de l'écriture du tag: ${e}`,
-      ToastAndroid.SHORT
-    );
-  } finally {
-    NfcManager.cancelTechnologyRequest();
-  }
-}
-
-function encodeTagData(text: string) {
-  const MIFARE_BLOCK_SIZE = 16;
-  let block = Array(MIFARE_BLOCK_SIZE).fill(0);
-
-  for (let i = 0; i < text.length; i++) {
-    block[i] = text.charCodeAt(i);
-  }
-  return block;
-}
-
-async function writeDataMifare({ userId }: NfcTagProps) {
-  try {
-    await NfcManager.requestTechnology(NfcTech.MifareClassic).then(
-      async () =>
-        await NfcManager.mifareClassicHandlerAndroid.mifareClassicAuthenticateA(
-          1,
-          [0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
-        )
-    );
-  } catch (error) {
-    ToastAndroid.show(
-      `Erreur lors de l'écriture du tag: ${error}`,
       ToastAndroid.SHORT
     );
   } finally {
