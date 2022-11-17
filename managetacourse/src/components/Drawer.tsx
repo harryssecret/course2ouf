@@ -18,22 +18,26 @@ import TagView from "../views/NfcScan";
 const Drawer = createDrawerNavigator();
 
 const DrawerContent = (props: DrawerContentComponentProps) => {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState<string>("Accueil");
   return (
     <DrawerContentScrollView {...props}>
-      <PaperDrawer.Section>
+      <PaperDrawer.Section title="Général">
         <PaperDrawer.Item
           label="Accueil"
           onPress={() => {
             props.navigation.navigate("Accueil");
+            setActive("Accueil");
           }}
+          active={active === "Accueil"}
           icon="home"
         />
         <PaperDrawer.Item
           label="Tags"
           onPress={() => {
             props.navigation.navigate("Tags");
+            setActive("Tags");
           }}
+          active={active === "Tags"}
           icon="tag"
         />
       </PaperDrawer.Section>
