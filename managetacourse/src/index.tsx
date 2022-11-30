@@ -10,12 +10,10 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { DrawerStack, RootNavigator } from "./components/Drawer";
-import TagView from "./TagEditionView";
+import { RootNavigator } from "./components/Drawer";
 
 const theme = {
   ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, primary: "red", secondary: "#e0f7fa" },
 };
 
 export type RootStackParamList = {
