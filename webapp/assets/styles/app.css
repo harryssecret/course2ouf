@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background-color: lightgray;
+table {
+    border: gray 1px solid;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead tr th {
+    text-align: left;
+}
+
+th,
+td {
+    padding: 20px;
 }
