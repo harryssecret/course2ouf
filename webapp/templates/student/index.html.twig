@@ -1,26 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Student index{% endblock %}
+{% block title %}Etudiants{% endblock %}
 
 {% block body %}
-    <h1>Student index</h1>
+    <h1 class="text-xl mb-4">Liste des étudiants</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Gender</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Genre</th>
                 <th>Mas</th>
-                <th>Objectiv</th>
-                <th>actions</th>
+                <th>Objectif</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for student in students %}
             <tr>
-                <td>{{ student.id }}</td>
                 <td>{{ student.firstname }}</td>
                 <td>{{ student.lastname }}</td>
                 <td>{{ student.gender ? 'Yes' : 'No' }}</td>
@@ -38,6 +36,8 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_student_new') }}">Create new</a>
+<div class="flex gap-4">
+    <a href="{{ path('app_student_new') }}">Ajouter</a>
+    <a href="{{ path('app_student_batch_import') }}">Importer un fichier</a>
+</div>
 {% endblock %}
