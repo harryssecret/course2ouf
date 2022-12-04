@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"tbl_student")]
+#[ORM\Table(name: "tbl_student")]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
@@ -23,8 +23,8 @@ class Student
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column]
-    private ?bool $gender = null;
+    #[ORM\Column(type: "string", enumType: Gender::class)]
+    private Gender $gender;
 
     #[ORM\Column]
     private ?int $mas = null;
@@ -72,18 +72,6 @@ class Student
         return $this;
     }
 
-    public function isGender(): ?bool
-    {
-        return $this->gender;
-    }
-
-    public function setGender(bool $gender): self
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
     public function getMas(): ?int
     {
         return $this->mas;
@@ -120,6 +108,18 @@ class Student
         return $this;
     }
 
+    public function setGender(Gender $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getGender(): Gender
+    {
+        return $this->gender;
+    }
+
     /**
      * @return Collection<int, Ranking>
      */
@@ -149,4 +149,10 @@ class Student
 
         return $this;
     }
+}
+
+enum Gender: string
+{
+    case Male = "H";
+    case Female = "F";
 }
