@@ -30,7 +30,7 @@ class Student
     private ?int $mas = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $objectiv = null;
+    private ?\DateTimeInterface $TimeGoal = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     private ?Grade $Grade = null;
@@ -84,14 +84,14 @@ class Student
         return $this;
     }
 
-    public function getObjectiv(): ?\DateTimeInterface
+    public function getTimeGoal(): ?\DateTimeInterface
     {
-        return $this->objectiv;
+        return $this->TimeGoal;
     }
 
-    public function setObjectiv(\DateTimeInterface $objectiv): self
+    public function setTimeGoal(\DateTimeInterface $TimeGoal): self
     {
-        $this->objectiv = $objectiv;
+        $this->TimeGoal = $TimeGoal;
 
         return $this;
     }
