@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Import;
 use App\Entity\Student;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -14,7 +15,7 @@ class ImportFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('csv_file', FileType::class, [
+            ->add('csvFile', FileType::class, [
                 'label' => 'Export (format CSV)',
                 'mapped' => false,
                 'required' => false,
@@ -30,7 +31,7 @@ class ImportFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Student::class
+            'data_class' => Import::class
         ]);
     }
 }

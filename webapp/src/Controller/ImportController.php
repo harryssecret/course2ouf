@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Form\ImportFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/import')]
 class ImportController extends AbstractController
@@ -18,11 +21,31 @@ class ImportController extends AbstractController
         ]);
     }
 
-    #[Route('/import', name: 'app_send_import', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    #[Route('/new', name: 'app_send_import', methods: ['GET', 'POST'])]
+    public function new(Request $request, SluggerInterface $slugger): Response
     {
-        $studentArray = [];
+        $form = $this->createForm(ImportFormType::class);
+        $form->handleRequest($request);
 
-        return $this->render('import/new.html.twig', []);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $csvFile = $form->get('csvFile')->getData();
+
+            if ($csvFile) {
+                $originalFilename = pathinfo($csvFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $csvFile->guessExtension();
+
+                try {
+                    $csvFile->move($this->getParameter("csv_import_directory"), $newFilename);
+                } catch (FileException $th) {
+                    echo $th;
+                }
+                $studentArray = [];
+            }
+
+            $this->redirectToRoute('app_import');
+        }
+
+        return $this->render('import/new.html.twig', ['form' => $form]);
     }
 }
