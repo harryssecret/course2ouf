@@ -53,4 +53,4 @@ jobs:
         with:
           context: "{{defaultContext}}:webapp"
           push: true
-          tags: lhermiteth14/course2ouf-symf:latest
+          tags: lhermiteth14/course2ouf-symf-git:latest
