@@ -2,7 +2,8 @@ name: Docker CI
 
 on:
   push:
-  pull_request:
+    branches:
+      - "main"
 
 jobs:
   build:
@@ -50,6 +51,6 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v3.2.0
         with:
-          context: ./webapp
+          context: "{{defaultContext}}:webapp"
           push: true
-          tags: lhermiteth14/course2ouf-symf:latest
+          tags: lhermiteth14/course2ouf-symf-git:latest
