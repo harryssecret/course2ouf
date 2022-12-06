@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Import;
 use App\Form\ImportFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -24,7 +25,8 @@ class ImportController extends AbstractController
     #[Route('/new', name: 'app_send_import', methods: ['GET', 'POST'])]
     public function new(Request $request, SluggerInterface $slugger): Response
     {
-        $form = $this->createForm(ImportFormType::class);
+        $import = new Import();
+        $form = $this->createForm(ImportFormType::class, $import);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -46,6 +48,6 @@ class ImportController extends AbstractController
             $this->redirectToRoute('app_import');
         }
 
-        return $this->render('import/new.html.twig', ['form' => $form]);
+        return $this->render('import/new.html.twig', ['form' => $form->createView()]);
     }
 }
