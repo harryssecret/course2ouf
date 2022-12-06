@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./webapp
+        working-directory: webapp
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
