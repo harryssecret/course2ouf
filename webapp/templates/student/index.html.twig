@@ -11,7 +11,7 @@
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Genre</th>
-                <th>Mas</th>
+                <th>VMA</th>
                 <th>Objectif</th>
                 <th>Actions</th>
             </tr>
@@ -21,9 +21,8 @@
             <tr>
                 <td>{{ student.firstname }}</td>
                 <td>{{ student.lastname }}</td>
-                <td>{{ student.gender ? 'Yes' : 'No' }}</td>
+                <td>{{ student.gender }}</td>
                 <td>{{ student.mas }}</td>
-                <td>{{ student.objectiv ? student.objectiv|date('H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_student_show', {'id': student.id}) }}">show</a>
                     <a href="{{ path('app_student_edit', {'id': student.id}) }}">edit</a>
@@ -38,6 +37,5 @@
     </table>
 <div class="flex gap-4">
     <a href="{{ path('app_student_new') }}">Ajouter</a>
-    <a href="{{ path('app_student_batch_import') }}">Importer un fichier</a>
 </div>
 {% endblock %}

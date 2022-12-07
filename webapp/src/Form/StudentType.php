@@ -16,9 +16,7 @@ class StudentType extends AbstractType
             ->add('lastname')
             ->add('gender')
             ->add('mas')
-            ->add('objectiv')
-            ->add('Grade')
-        ;
+            ->add('Grade');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
