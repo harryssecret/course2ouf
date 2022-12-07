@@ -20,7 +20,7 @@ class ImportFormType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'mimeTypes' => ['text/csv'],
+                        'mimeTypes' => ['text/csv', 'text/plain'],
                         'mimeTypesMessage' => 'Envoyez un fichier au format valide.'
                     ])
                 ]
