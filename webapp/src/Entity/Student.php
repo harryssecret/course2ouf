@@ -153,6 +153,6 @@ class Student
 
 enum Gender: string
 {
-    case Male = "H";
-    case Female = "F";
+    case Male = "Homme";
+    case Female = "Femme";
 }
