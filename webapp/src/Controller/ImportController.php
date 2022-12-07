@@ -42,12 +42,16 @@ class ImportController extends AbstractController
                 } catch (FileException $th) {
                     echo $th;
                 }
-                $studentArray = [];
             }
 
             $this->redirectToRoute('app_import');
         }
 
         return $this->render('import/new.html.twig', ['form' => $form->createView()]);
+    }
+
+    private function importCsv(mixed $csvFile)
+    {
+        $studentArray = [];
     }
 }
