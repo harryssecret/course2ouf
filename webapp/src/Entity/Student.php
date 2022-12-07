@@ -36,7 +36,7 @@ class Student
     private ?Grade $Grade = null;
 
     #[ORM\OneToMany(mappedBy: 'Student', targetEntity: Ranking::class)]
-    private Collection $rankings;
+    private ?Collection $rankings = null;
 
     public function __construct()
     {
