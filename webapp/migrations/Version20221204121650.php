@@ -14,7 +14,7 @@ final class Version20221204121650 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Changed boolean gender to enum (counted as str by doctrine)';
     }
 
     public function up(Schema $schema): void
