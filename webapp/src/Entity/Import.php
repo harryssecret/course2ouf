@@ -20,9 +20,6 @@ class Import
     #[ORM\Column]
     private ?\DateTimeImmutable $uploadedAt = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $csvFile = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -48,18 +45,6 @@ class Import
     public function setUploadedAt(\DateTimeImmutable $uploadedAt): self
     {
         $this->uploadedAt = $uploadedAt;
-
-        return $this;
-    }
-
-    public function getCsvFile(): ?string
-    {
-        return $this->csvFile;
-    }
-
-    public function setCsvFile(string $csvFile): self
-    {
-        $this->csvFile = $csvFile;
 
         return $this;
     }

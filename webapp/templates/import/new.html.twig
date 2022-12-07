@@ -6,10 +6,6 @@
 {% block body %}
 	<h1 class="text-xl">Importer des étudiants</h1>
 	<p class="text-xs">Vous pouvez envoyer un fichier au format CSV, et ceux ci seront automatiquement ajoutés en tant qu'élève.</p>
-	
 
-	{{form_start(form)}}
-	{{form_row(form.csvFile)}}
-		<input type="submit" value="Envoyer">	
-	{{ form_end(form) }}
+	{% include "import/_form.html.twig" %}
 {% endblock %}
