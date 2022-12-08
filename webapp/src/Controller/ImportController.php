@@ -80,14 +80,14 @@ class ImportController extends AbstractController
                     case 'homme':
                     case 'h':
                     case 'H':
-                        $student->setGender(Gender::Male);
+                        $student->setGender("Homme");
                         break;
 
                     case 'Femme':
                     case 'femme':
                     case 'F':
                     case 'f':
-                        $student->setGender(Gender::Female);
+                        $student->setGender("Femme");
                         break;
                 }
 
