@@ -2,6 +2,7 @@
 
 namespace App\Test\Controller;
 
+use App\Entity\Gender;
 use App\Entity\Student;
 use App\Repository\StudentRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -47,8 +48,6 @@ class StudentControllerTest extends WebTestCase
             'student[firstname]' => 'Testing',
             'student[lastname]' => 'Testing',
             'student[gender]' => 'Testing',
-            'student[mas]' => 'Testing',
-            'student[objectiv]' => 'Testing',
             'student[Grade]' => 'Testing',
         ]);
 
@@ -63,10 +62,7 @@ class StudentControllerTest extends WebTestCase
         $fixture = new Student();
         $fixture->setFirstname('My Title');
         $fixture->setLastname('My Title');
-        $fixture->setGender('My Title');
-        $fixture->setMas('My Title');
-        $fixture->setObjectiv('My Title');
-        $fixture->setGrade('My Title');
+        $fixture->setGender('Male');
 
         $this->repository->save($fixture, true);
 
@@ -85,9 +81,6 @@ class StudentControllerTest extends WebTestCase
         $fixture->setFirstname('My Title');
         $fixture->setLastname('My Title');
         $fixture->setGender('My Title');
-        $fixture->setMas('My Title');
-        $fixture->setObjectiv('My Title');
-        $fixture->setGrade('My Title');
 
         $this->repository->save($fixture, true);
 
@@ -97,8 +90,6 @@ class StudentControllerTest extends WebTestCase
             'student[firstname]' => 'Something New',
             'student[lastname]' => 'Something New',
             'student[gender]' => 'Something New',
-            'student[mas]' => 'Something New',
-            'student[objectiv]' => 'Something New',
             'student[Grade]' => 'Something New',
         ]);
 
@@ -109,8 +100,6 @@ class StudentControllerTest extends WebTestCase
         self::assertSame('Something New', $fixture[0]->getFirstname());
         self::assertSame('Something New', $fixture[0]->getLastname());
         self::assertSame('Something New', $fixture[0]->getGender());
-        self::assertSame('Something New', $fixture[0]->getMas());
-        self::assertSame('Something New', $fixture[0]->getObjectiv());
         self::assertSame('Something New', $fixture[0]->getGrade());
     }
 
@@ -123,10 +112,7 @@ class StudentControllerTest extends WebTestCase
         $fixture = new Student();
         $fixture->setFirstname('My Title');
         $fixture->setLastname('My Title');
-        $fixture->setGender('My Title');
-        $fixture->setMas('My Title');
-        $fixture->setObjectiv('My Title');
-        $fixture->setGrade('My Title');
+        $fixture->setGender('Homme');
 
         $this->repository->save($fixture, true);
 
