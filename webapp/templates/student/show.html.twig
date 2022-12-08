@@ -8,28 +8,16 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ student.id }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
+                <th>Prénom</th>
                 <td>{{ student.firstname }}</td>
             </tr>
             <tr>
-                <th>Lastname</th>
+                <th>Nom</th>
                 <td>{{ student.lastname }}</td>
             </tr>
             <tr>
-                <th>Gender</th>
-                <td>{{ student.gender ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Mas</th>
-                <td>{{ student.mas }}</td>
-            </tr>
-            <tr>
-                <th>Objectiv</th>
-                <td>{{ student.objectiv ? student.objectiv|date('H:i:s') : '' }}</td>
+                <th>Genre</th>
+                <td>{{ student.gender }}</td>
             </tr>
         </tbody>
     </table>

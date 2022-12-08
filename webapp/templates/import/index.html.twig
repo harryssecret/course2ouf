@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Import
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-xl">Liste des imports</h1>
+	<p class="text-xs">Vous pouvez consulter la liste de tous les imports ici.</p>
+
+	<table>
+		<thead>
+			<th>Nom du fichier</th>
+			<th>Date d'import</th>
+		</thead>
+		<tbody>
+			{% for import_row in imports %}
+
+				<tr>
+					<td>{{import_row.FilePath}}</td>
+					<td>{{import_row.uploadedAt|date("d/m/Y")}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a href="{{path('app_send_import')}}">Importer un nouveau tableau</a>
+{% endblock %}

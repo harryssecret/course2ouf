@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"tbl_student")]
+#[ORM\Table(name: "tbl_student")]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
@@ -23,20 +23,17 @@ class Student
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column]
-    private ?bool $gender = null;
-
-    #[ORM\Column]
-    private ?int $mas = null;
+    #[ORM\Column(length: 255)]
+    private ?string $gender = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $objectiv = null;
+    private ?\DateTimeInterface $TimeGoal = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     private ?Grade $Grade = null;
 
     #[ORM\OneToMany(mappedBy: 'Student', targetEntity: Ranking::class)]
-    private Collection $rankings;
+    private ?Collection $rankings = null;
 
     public function __construct()
     {
@@ -72,38 +69,14 @@ class Student
         return $this;
     }
 
-    public function isGender(): ?bool
+    public function getTimeGoal(): ?\DateTimeInterface
     {
-        return $this->gender;
+        return $this->TimeGoal;
     }
 
-    public function setGender(bool $gender): self
+    public function setTimeGoal(\DateTimeInterface $TimeGoal): self
     {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    public function getMas(): ?int
-    {
-        return $this->mas;
-    }
-
-    public function setMas(int $mas): self
-    {
-        $this->mas = $mas;
-
-        return $this;
-    }
-
-    public function getObjectiv(): ?\DateTimeInterface
-    {
-        return $this->objectiv;
-    }
-
-    public function setObjectiv(\DateTimeInterface $objectiv): self
-    {
-        $this->objectiv = $objectiv;
+        $this->TimeGoal = $TimeGoal;
 
         return $this;
     }
@@ -118,6 +91,18 @@ class Student
         $this->Grade = $Grade;
 
         return $this;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getGender(): string
+    {
+        return $this->gender;
     }
 
     /**
@@ -149,4 +134,10 @@ class Student
 
         return $this;
     }
+}
+
+enum Gender: string
+{
+    case Male = "Homme";
+    case Female = "Femme";
 }

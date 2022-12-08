@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<h1 class="text-3xl font-bold">Accueil</h1>
+
+<h2 class="text-xl font-bold">Prochaines courses prévues</h2>
+<ul>
+{% for race in races %}
+    <li>{race.start}</li>
+{% else %}
+    <li>Aucune course prévue.</li>
+{% endfor %}
+    
+</ul>
+{% endblock %}

@@ -2,22 +2,21 @@
 
 namespace App\Test\Controller;
 
-use App\Entity\Gender;
-use App\Entity\Student;
-use App\Repository\StudentRepository;
+use App\Entity\Race;
+use App\Repository\RaceRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class StudentControllerTest extends WebTestCase
+class RaceControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
-    private StudentRepository $repository;
-    private string $path = '/student/';
+    private RaceRepository $repository;
+    private string $path = '/race/';
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        $this->repository = static::getContainer()->get('doctrine')->getRepository(Student::class);
+        $this->repository = static::getContainer()->get('doctrine')->getRepository(Race::class);
 
         foreach ($this->repository->findAll() as $object) {
             $this->repository->remove($object, true);
@@ -29,7 +28,7 @@ class StudentControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->path);
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Student index');
+        self::assertPageTitleContains('Race index');
 
         // Use the $crawler to perform additional assertions e.g.
         // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
@@ -45,13 +44,10 @@ class StudentControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
 
         $this->client->submitForm('Save', [
-            'student[firstname]' => 'Testing',
-            'student[lastname]' => 'Testing',
-            'student[gender]' => 'Testing',
-            'student[Grade]' => 'Testing',
+            'race[start]' => 'Testing',
         ]);
 
-        self::assertResponseRedirects('/student/');
+        self::assertResponseRedirects('/race/');
 
         self::assertSame($originalNumObjectsInRepository + 1, count($this->repository->findAll()));
     }
@@ -59,17 +55,15 @@ class StudentControllerTest extends WebTestCase
     public function testShow(): void
     {
         $this->markTestIncomplete();
-        $fixture = new Student();
-        $fixture->setFirstname('My Title');
-        $fixture->setLastname('My Title');
-        $fixture->setGender('Male');
+        $fixture = new Race();
+        $fixture->setStart('My Title');
 
         $this->repository->save($fixture, true);
 
         $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Student');
+        self::assertPageTitleContains('Race');
 
         // Use assertions to check that the properties are properly displayed.
     }
@@ -77,30 +71,22 @@ class StudentControllerTest extends WebTestCase
     public function testEdit(): void
     {
         $this->markTestIncomplete();
-        $fixture = new Student();
-        $fixture->setFirstname('My Title');
-        $fixture->setLastname('My Title');
-        $fixture->setGender('My Title');
+        $fixture = new Race();
+        $fixture->setStart('My Title');
 
         $this->repository->save($fixture, true);
 
         $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
 
         $this->client->submitForm('Update', [
-            'student[firstname]' => 'Something New',
-            'student[lastname]' => 'Something New',
-            'student[gender]' => 'Something New',
-            'student[Grade]' => 'Something New',
+            'race[start]' => 'Something New',
         ]);
 
-        self::assertResponseRedirects('/student/');
+        self::assertResponseRedirects('/race/');
 
         $fixture = $this->repository->findAll();
 
-        self::assertSame('Something New', $fixture[0]->getFirstname());
-        self::assertSame('Something New', $fixture[0]->getLastname());
-        self::assertSame('Something New', $fixture[0]->getGender());
-        self::assertSame('Something New', $fixture[0]->getGrade());
+        self::assertSame('Something New', $fixture[0]->getStart());
     }
 
     public function testRemove(): void
@@ -109,10 +95,8 @@ class StudentControllerTest extends WebTestCase
 
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
-        $fixture = new Student();
-        $fixture->setFirstname('My Title');
-        $fixture->setLastname('My Title');
-        $fixture->setGender('Homme');
+        $fixture = new Race();
+        $fixture->setStart('My Title');
 
         $this->repository->save($fixture, true);
 
@@ -122,6 +106,6 @@ class StudentControllerTest extends WebTestCase
         $this->client->submitForm('Delete');
 
         self::assertSame($originalNumObjectsInRepository, count($this->repository->findAll()));
-        self::assertResponseRedirects('/student/');
+        self::assertResponseRedirects('/race/');
     }
 }

@@ -27,7 +27,7 @@ final class Version20221130135037 extends AbstractMigration
         $this->addSql('CREATE TABLE tbl_grade (id INT NOT NULL, shortname VARCHAR(255) NOT NULL, level INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE tbl_race (id INT NOT NULL, start DATE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE tbl_ranking (id INT NOT NULL, endrun TIME(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE tbl_student (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, gender BOOLEAN NOT NULL, mas INT NOT NULL, objectiv TIME(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE tbl_student (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, gender BOOLEAN NOT NULL, mas INT NOT NULL, objectiv TIME(0) WITHOUT TIME ZONE, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE messenger_messages (id BIGSERIAL NOT NULL, body TEXT NOT NULL, headers TEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, available_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, delivered_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_75EA56E0FB7336F0 ON messenger_messages (queue_name)');
         $this->addSql('CREATE INDEX IDX_75EA56E0E3BD61CE ON messenger_messages (available_at)');
