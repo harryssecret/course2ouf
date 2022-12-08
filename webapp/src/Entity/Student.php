@@ -23,11 +23,8 @@ class Student
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column(type: "string", enumType: Gender::class)]
-    private Gender $gender;
-
-    #[ORM\Column]
-    private ?int $mas = null;
+    #[ORM\Column(length: 255)]
+    private ?string $gender = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $TimeGoal = null;
@@ -72,18 +69,6 @@ class Student
         return $this;
     }
 
-    public function getMas(): ?int
-    {
-        return $this->mas;
-    }
-
-    public function setMas(int $mas): self
-    {
-        $this->mas = $mas;
-
-        return $this;
-    }
-
     public function getTimeGoal(): ?\DateTimeInterface
     {
         return $this->TimeGoal;
@@ -108,14 +93,14 @@ class Student
         return $this;
     }
 
-    public function setGender(Gender $gender): self
+    public function setGender(string $gender): self
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    public function getGender(): Gender
+    public function getGender(): string
     {
         return $this->gender;
     }
