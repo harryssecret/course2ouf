@@ -11,8 +11,6 @@
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Genre</th>
-                <th>VMA</th>
-                <th>Objectif</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,7 +20,6 @@
                 <td>{{ student.firstname }}</td>
                 <td>{{ student.lastname }}</td>
                 <td>{{ student.gender }}</td>
-                <td>{{ student.mas }}</td>
                 <td>
                     <a href="{{ path('app_student_show', {'id': student.id}) }}">show</a>
                     <a href="{{ path('app_student_edit', {'id': student.id}) }}">edit</a>
