@@ -22,5 +22,8 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "daisyui": "^2.42.1"
     }
 }

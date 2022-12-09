@@ -1,6 +1,8 @@
 module.exports = {
   plugins: {
-    tailwindcss: {},
+    tailwindcss: {
+      plugins: require("daisyui"),
+    },
     autoprefixer: {},
   },
-}
+};
