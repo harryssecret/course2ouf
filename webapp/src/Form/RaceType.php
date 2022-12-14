@@ -9,17 +9,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RaceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('start')
-        ;
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void {
+        $builder->add("start");
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Race::class,
+            "data_class" => Race::class,
         ]);
     }
 }

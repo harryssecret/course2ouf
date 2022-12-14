@@ -9,19 +9,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StudentType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void {
         $builder
-            ->add('firstname')
-            ->add('lastname')
-            ->add('gender')
-            ->add('Grade');
+            ->add("firstname")
+            ->add("lastname")
+            ->add("gender")
+            ->add("Grade");
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Student::class,
+            "data_class" => Student::class,
         ]);
     }
 }

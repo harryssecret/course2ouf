@@ -11,26 +11,28 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ImportFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('csvFile', FileType::class, [
-                'label' => 'Export (format CSV)',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['text/csv', 'text/plain'],
-                        'mimeTypesMessage' => 'Envoyez un fichier au format valide.'
-                    ])
-                ]
-            ]);
+    public function buildForm(
+        FormBuilderInterface $builder,
+        array $options
+    ): void {
+        $builder->add("csvFile", FileType::class, [
+            "label" => "Export (format CSV)",
+            "mapped" => false,
+            "required" => false,
+            "constraints" => [
+                new File([
+                    "mimeTypes" => ["text/csv", "text/plain"],
+                    "mimeTypesMessage" =>
+                        "Envoyez un fichier au format valide.",
+                ]),
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Import::class
+            "data_class" => Import::class,
         ]);
     }
 }
