@@ -1,4 +1,6 @@
-{{form_start(form)}}
-{{form_row(form.csvFile)}}
-<input type="submit" value="Envoyer">
+{{ form_start(form) }}
+<div>
+    {{ form_row(form.csvFile) }}
+</div>
+<input class="btn btn-primary" type="submit" value="Envoyer" />
 {{ form_end(form) }}

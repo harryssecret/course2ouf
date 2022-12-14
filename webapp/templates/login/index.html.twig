@@ -1,24 +1,81 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}Connexion {% endblock %} {%
+block body %}
+<div class="flex justify-center">
+    <div>
+        {% if error %}
+        <div class="alert alert-error shadow-lg">
+            <div>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="stroke-current flex-shrink-0 h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+                <div>
+                    {{error.messageKey|trans(error.messageData, 'security')}}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div
+            class="card flex-col justify-center shadow-2xl max-w-sm items-center px-4"
+        >
+            <div class="card-body">
+                <h1 class="text-2xl">Connexion</h1>
 
-{% block title %}Connexion
-{% endblock %}
-
-{% block body %}
-	{% if error %}
-		<div>{{error.messageKey|trans(error.messageData, 'security')}}</div>
-	{% endif %}
-
-	<div class="flex justify-center w-full h-full">
-		<form class="flex flex-col items-center" action="{{ path('app_login') }}" method="post">
-			<label for="username">Nom d'utilisateur</label>
-			<input type="text" id="username" name="_username" value="{{last_username}}">
-
-			<label for="password">Mot de passe</label>
-			<input type="password" name="_password" id="password">
-
-			<input type="hidden" name="_csrf_token" value="{{csrf_token('authenticate')}}">
-
-			<button type="submit">Se connecter</button>
-		</form>
-	</div>
+                <div class="flex justify-center w-full h-full">
+                    <form
+                        class="flex flex-col items-center"
+                        action="{{ path('app_login') }}"
+                        method="post"
+                    >
+                        <div class="form-control">
+                            <label class="label" for="username">
+                                <span class="label-text">
+                                    Nom d'utilisateur
+                                </span>
+                            </label>
+                            <input
+                                class="input input-bordered"
+                                type="text"
+                                id="username"
+                                name="_username"
+                                value="{{ last_username }}"
+                            />
+                        </div>
+                        <div class="form-control">
+                            <label class="label" for="password">
+                                <span class="label-text"> Mot de passe </span>
+                            </label>
+                            <input
+                                class="input input-bordered"
+                                type="password"
+                                name="_password"
+                                id="password"
+                            />
+                        </div>
+                        <input
+                            class="input"
+                            type="hidden"
+                            name="_csrf_token"
+                            value="{{ csrf_token('authenticate') }}"
+                        />
+                        <div class="form-control mt-6">
+                            <button class="btn" type="submit">
+                                Se connecter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

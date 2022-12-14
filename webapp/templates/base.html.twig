@@ -1,29 +1,77 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %} - course2ouf</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+        <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"
+        />
+        {# Run `composer require symfony/webpack-encore-bundle` to start using
+        Symfony UX #} {% block stylesheets %}
+        {{
+            encore_entry_link_tags("app")
+        }}
         {% endblock %}
     </head>
     <body>
-    <nav class="flex flex-row justify-between gap-4 p-4">
-        <div>
-            <p><a href="/">course2ouf</a></p>
+        <div class="drawer">
+            <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content">
+                <nav class="navbar bg-base-100">
+                    <div class="flex-none">
+                        <button
+                            id="drawer-toggle"
+                            class="btn btn-square btn-ghost drawer-button"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                class="inline-block w-5 h-5 stroke-current"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex-1">
+                        <a class="btn btn-ghost normal-case text-xl" href="/"
+                            >course2ouf</a
+                        >
+                    </div>
+                    <div class="flex-none">
+                        <ul class="menu menu-horizontal p-0">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <p>connecté</p>
+                            {% endif %}
+
+                            <li>
+                                <a href="/login">Se connecter</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div>{% block body %}{% endblock %}</div>
+                <!-- Page content here -->
+            </div>
+            <div class="drawer-side">
+                <label for="my-drawer" class="drawer-overlay"></label>
+                <ul class="menu p-4 w-80 bg-base-100 text-base-content">
+                    <!-- Sidebar content here -->
+                    <li><a href="/student">Etudiants</a></li>
+                    <li><a href="/import">Importer</a></li>
+                    <li><a href="/race">Courses</a></li>
+                    <li><a href="/grade">Classes</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-            <ul>
-                <li><a href="/login">Se connecter</a></li>
-            </ul>
-        </div>
-    </nav>
-        {% block body %}{% endblock %}
+        {% block javascripts %}
+        {{ encore_entry_script_tags("app") }}
+        {% endblock %}
     </body>
 </html>
