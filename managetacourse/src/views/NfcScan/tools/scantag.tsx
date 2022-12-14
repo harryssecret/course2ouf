@@ -1,6 +1,32 @@
 import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
 import { ToastAndroid, View } from "react-native";
 
+class Tag {
+  private _nfcCardId: string;
+
+  public get nfcCardId(): string {
+    return this._nfcCardId;
+  }
+
+  public set nfcCardId(value: string) {
+    this._nfcCardId = value;
+  }
+
+  private _arrivalTime: Date;
+
+  public get arrivalTime(): Date {
+    return this._arrivalTime;
+  }
+  public set arrivalTime(value: Date) {
+    this._arrivalTime = value;
+  }
+
+  constructor(nfcCardId: string, arrivalTime: Date) {
+    this._nfcCardId = nfcCardId;
+    this._arrivalTime = arrivalTime;
+  }
+}
+
 type NfcTagProps = {
   userId: string;
 };
@@ -8,8 +34,8 @@ type NfcTagProps = {
 export async function ReadTagNdef() {
   try {
     await NfcManager.requestTechnology(NfcTech.Ndef);
-    const tag = await NfcManager.getTag();
-    return tag;
+    const tagId = await NfcManager.getTag();
+    return tagId;
   } catch (e) {
     console.log(e);
     ToastAndroid.show("Erreur lors de la lecture du tag :", ToastAndroid.SHORT);
