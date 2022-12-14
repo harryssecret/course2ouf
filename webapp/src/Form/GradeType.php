@@ -12,9 +12,7 @@ class GradeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('shortname')
-            ->add('level')
-        ;
+            ->add('gradename');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

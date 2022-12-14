@@ -9,8 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Shortname</th>
-                <th>Level</th>
+                <th>gradename</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,8 +17,7 @@
         {% for grade in grades %}
             <tr>
                 <td>{{ grade.id }}</td>
-                <td>{{ grade.shortname }}</td>
-                <td>{{ grade.level }}</td>
+                <td>{{ grade.gradename }}</td>
                 <td>
                     <a href="{{ path('app_grade_show', {'id': grade.id}) }}">show</a>
                     <a href="{{ path('app_grade_edit', {'id': grade.id}) }}">edit</a>

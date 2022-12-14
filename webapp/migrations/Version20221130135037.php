@@ -24,7 +24,7 @@ final class Version20221130135037 extends AbstractMigration
         $this->addSql('CREATE SEQUENCE tbl_race_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE tbl_ranking_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE tbl_student_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE tbl_grade (id INT NOT NULL, shortname VARCHAR(255) NOT NULL, level INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE tbl_grade (id INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE tbl_race (id INT NOT NULL, start DATE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE tbl_ranking (id INT NOT NULL, endrun TIME(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE tbl_student (id INT NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, gender BOOLEAN NOT NULL, mas INT NOT NULL, objectiv TIME(0) WITHOUT TIME ZONE, PRIMARY KEY(id))');

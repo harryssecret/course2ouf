@@ -44,8 +44,7 @@ class GradeControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
 
         $this->client->submitForm('Save', [
-            'grade[shortname]' => 'Testing',
-            'grade[level]' => 'Testing',
+ 
         ]);
 
         self::assertResponseRedirects('/grade/');
@@ -57,8 +56,7 @@ class GradeControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Grade();
-        $fixture->setShortname('My Title');
-        $fixture->setLevel('My Title');
+
 
         $this->repository->save($fixture, true);
 
@@ -74,24 +72,21 @@ class GradeControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Grade();
-        $fixture->setShortname('My Title');
-        $fixture->setLevel('My Title');
+
 
         $this->repository->save($fixture, true);
 
         $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
 
         $this->client->submitForm('Update', [
-            'grade[shortname]' => 'Something New',
-            'grade[level]' => 'Something New',
+
         ]);
 
         self::assertResponseRedirects('/grade/');
 
         $fixture = $this->repository->findAll();
 
-        self::assertSame('Something New', $fixture[0]->getShortname());
-        self::assertSame('Something New', $fixture[0]->getLevel());
+
     }
 
     public function testRemove(): void
@@ -101,8 +96,7 @@ class GradeControllerTest extends WebTestCase
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
         $fixture = new Grade();
-        $fixture->setShortname('My Title');
-        $fixture->setLevel('My Title');
+
 
         $this->repository->save($fixture, true);
 

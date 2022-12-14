@@ -16,14 +16,11 @@ class Grade
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $shortname = null;
-
-    #[ORM\Column]
-    private ?int $level = null;
-
     #[ORM\OneToMany(mappedBy: 'Grade', targetEntity: Student::class)]
     private Collection $students;
+
+    #[ORM\Column(length: 255)]
+    private ?string $gradename = null;
 
     public function __construct()
     {
@@ -34,31 +31,7 @@ class Grade
     {
         return $this->id;
     }
-
-    public function getShortname(): ?string
-    {
-        return $this->shortname;
-    }
-
-    public function setShortname(string $shortname): self
-    {
-        $this->shortname = $shortname;
-
-        return $this;
-    }
-
-    public function getLevel(): ?int
-    {
-        return $this->level;
-    }
-
-    public function setLevel(int $level): self
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
+ 
     /**
      * @return Collection<int, Student>
      */
@@ -85,6 +58,18 @@ class Grade
                 $student->setGrade(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getgradename(): ?string
+    {
+        return $this->gradename;
+    }
+
+    public function setgradename(string $gradename): self
+    {
+        $this->gradename = $gradename;
 
         return $this;
     }
