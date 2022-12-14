@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"tbl_grade")]
+#[ORM\Table(name: "tbl_grade")]
 #[ORM\Entity(repositoryClass: GradeRepository::class)]
 class Grade
 {
@@ -22,7 +22,7 @@ class Grade
     #[ORM\Column]
     private ?int $level = null;
 
-    #[ORM\OneToMany(mappedBy: 'Grade', targetEntity: Student::class)]
+    #[ORM\OneToMany(mappedBy: "Grade", targetEntity: Student::class)]
     private Collection $students;
 
     public function __construct()

@@ -29,10 +29,10 @@ class Student
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $TimeGoal = null;
 
-    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\ManyToOne(inversedBy: "students")]
     private ?Grade $Grade = null;
 
-    #[ORM\OneToMany(mappedBy: 'Student', targetEntity: Ranking::class)]
+    #[ORM\OneToMany(mappedBy: "Student", targetEntity: Ranking::class)]
     private ?Collection $rankings = null;
 
     public function __construct()

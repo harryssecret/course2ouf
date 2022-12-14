@@ -17,7 +17,8 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method Referee[]    findAll()
  * @method Referee[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RefereeRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class RefereeRepository extends ServiceEntityRepository implements
+    PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -45,10 +46,17 @@ class RefereeRepository extends ServiceEntityRepository implements PasswordUpgra
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
+    public function upgradePassword(
+        PasswordAuthenticatedUserInterface $user,
+        string $newHashedPassword
+    ): void {
         if (!$user instanceof Referee) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(
+                sprintf(
+                    'Instances of "%s" are not supported.',
+                    \get_class($user)
+                )
+            );
         }
 
         $user->setPassword($newHashedPassword);
@@ -56,28 +64,28 @@ class RefereeRepository extends ServiceEntityRepository implements PasswordUpgra
         $this->save($user, true);
     }
 
-//    /**
-//     * @return Referee[] Returns an array of Referee objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Referee[] Returns an array of Referee objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('r.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Referee
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Referee
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
