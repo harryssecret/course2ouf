@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"tbl_grade")]
+#[ORM\Table(name: "tbl_grade")]
 #[ORM\Entity(repositoryClass: GradeRepository::class)]
 class Grade
 {
@@ -31,7 +31,7 @@ class Grade
     {
         return $this->id;
     }
- 
+
     /**
      * @return Collection<int, Student>
      */
@@ -72,5 +72,10 @@ class Grade
         $this->gradename = $gradename;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->gradename;
     }
 }

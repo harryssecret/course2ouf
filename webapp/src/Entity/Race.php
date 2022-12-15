@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"tbl_race")]
+#[ApiResource]
+#[ORM\Table(name: "tbl_race")]
 #[ORM\Entity(repositoryClass: RaceRepository::class)]
 class Race
 {
@@ -73,5 +75,10 @@ class Race
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->start->format('d/m/Y');
     }
 }
