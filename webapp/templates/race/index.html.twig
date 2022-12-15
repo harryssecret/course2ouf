@@ -22,7 +22,7 @@
         {% for race in races %}
             <tr>
                 <td>{{ race.id }}</td>
-                <td>{{ race.start ? race.start|date('Y-m-d') : '' }}</td>
+                <td>{{ race.start ? race.start|date('d-m-Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_race_show', {'id': race.id}) }}">show</a>
                     <a href="{{ path('app_race_edit', {'id': race.id}) }}">edit</a>
