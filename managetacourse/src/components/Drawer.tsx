@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Drawer as PaperDrawer, Text, Appbar } from "react-native-paper";
+import { Drawer as PaperDrawer, Appbar } from "react-native-paper";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -18,7 +18,7 @@ import BarcodeView from "../views/BarcodeScan";
 const Drawer = createDrawerNavigator();
 
 const DrawerContent = (props: DrawerContentComponentProps) => {
-  const [active, setActive] = useState<string>("Accueil");
+  const [active, setActive] = useState("Accueil");
   return (
     <DrawerContentScrollView {...props}>
       <PaperDrawer.Section title="Général">
@@ -32,13 +32,13 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
           icon="home"
         />
         <PaperDrawer.Item
-          label="Tags"
+          label="Code barres"
           onPress={() => {
             props.navigation.navigate("Tags");
             setActive("Tags");
           }}
           active={active === "Tags"}
-          icon="tag"
+          icon="barcode"
         />
       </PaperDrawer.Section>
     </DrawerContentScrollView>
