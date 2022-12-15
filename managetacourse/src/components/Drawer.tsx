@@ -13,7 +13,7 @@ import {
 import { RootStackParamList } from "..";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Home from "../HomeView";
-import TagView from "../views/NfcScan";
+import BarcodeView from "../views/BarcodeScan";
 
 const Drawer = createDrawerNavigator();
 
@@ -47,9 +47,13 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 
 export const RootNavigator = () => {
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    <Drawer.Navigator
+      drawerContent={(props: DrawerContentComponentProps) => (
+        <DrawerContent {...props} />
+      )}
+    >
       <Drawer.Screen name="Accueil" component={Home} />
-      <Drawer.Screen name="Tags" component={TagView} />
+      <Drawer.Screen name="Tags" component={BarcodeView} />
     </Drawer.Navigator>
   );
 };
@@ -61,12 +65,12 @@ export const DrawerStack = () => {
     <Stack.Navigator
       initialRouteName="Accueil"
       screenOptions={{
-        header: (props) => <Header {...props} />,
+        header: (props: StackHeaderProps) => <Header {...props} />,
         headerMode: "screen",
       }}
     >
       <Stack.Screen name="Accueil" component={Home} />
-      <Stack.Screen name="Tags" component={TagView} />
+      <Stack.Screen name="Barcodes" component={BarcodeView} />
     </Stack.Navigator>
   );
 };
