@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RankingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name:"tbl_ranking")]
+#[ApiResource]
+#[ORM\Table(name: "tbl_ranking")]
 #[ORM\Entity(repositoryClass: RankingRepository::class)]
 class Ranking
 {
