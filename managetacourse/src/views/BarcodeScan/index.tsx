@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ToastAndroid } from "react-native";
-import { Button, Text, withTheme } from "react-native-paper";
+import { Button, Portal, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -62,13 +62,12 @@ type ScannedBarcodeInfosProps = {
 };
 
 const ScanBarcodeRoute = (): JSX.Element => {
-  const [isChronoStarted, setIsChronoStarted] = useState<boolean>(false);
-  const [startRunningTime, setStartRunningTime] = useState<Date>(
-    new Date(0, 0, 0)
-  );
+  const [isChronoStarted, setIsChronoStarted] = useState(false);
+  const [startRunningTime, setStartRunningTime] = useState(new Date(0, 0, 0));
   const [scannedBarcode, setScannedBarcode] = useState<
     Array<ScannedBarcodeInfosProps>
   >([]);
+  const [isScanned, setIsScanned] = useState(false);
 
   const [hasPermission, setHasPermission] = useState<boolean>();
 
@@ -90,7 +89,7 @@ const ScanBarcodeRoute = (): JSX.Element => {
     };
 
     getBarcodePermissions();
-  });
+  }, []);
 
   const handleBarcodeScan = ({ type, data }: BarCodeScannerResult) => {
     const currentTime = new Date();
@@ -104,6 +103,7 @@ const ScanBarcodeRoute = (): JSX.Element => {
     } else {
       ToastAndroid.show("Format de code barre inconnu.", ToastAndroid.SHORT);
     }
+    setIsScanned(true);
   };
 
   if (hasPermission == null) {
@@ -114,8 +114,11 @@ const ScanBarcodeRoute = (): JSX.Element => {
 
   return (
     <View>
+      <BarCodeScanner
+        onBarCodeScanned={isScanned ? undefined : handleBarcodeScan}
+        style={styles.barCodeScan}
+      />
       <View style={styles.buttonContainer}>
-        <BarCodeScanner onBarCodeScanned={handleBarcodeScan} />
         <Button icon="clock-outline" onPress={startTimer} mode="contained">
           Démarrer le timer
         </Button>
@@ -130,6 +133,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: 24,
     alignItems: "center",
+  },
+  barCodeScan: {
+    display: "flex",
+    width: "100%",
+    height: "40%",
   },
 });
 
