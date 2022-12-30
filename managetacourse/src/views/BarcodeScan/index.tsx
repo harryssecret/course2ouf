@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ToastAndroid } from "react-native";
+import { View, StyleSheet, ToastAndroid, ScrollView } from "react-native";
 import { Button, Portal, Text, withTheme } from "react-native-paper";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -57,6 +57,7 @@ const HistoryTagRoute = (): JSX.Element => {
 };
 
 type ScannedBarcodeInfosProps = {
+  id: number;
   userBarcodeId: string | undefined;
   arrivalTime: number;
 };
@@ -68,6 +69,7 @@ const ScanBarcodeRoute = (): JSX.Element => {
     Array<ScannedBarcodeInfosProps>
   >([]);
   const [isScanned, setIsScanned] = useState(false);
+  let id = 0;
 
   const [hasPermission, setHasPermission] = useState<boolean>();
 
@@ -94,8 +96,10 @@ const ScanBarcodeRoute = (): JSX.Element => {
   const handleBarcodeScan = ({ type, data }: BarCodeScannerResult) => {
     const currentTime = new Date();
     const arrivalTime = currentTime.getTime() - startRunningTime.getTime();
-    if (type == "code128") {
+    console.log(type, data);
+    if (data) {
       const newScannedBarcode: ScannedBarcodeInfosProps = {
+        id: id++,
         userBarcodeId: data,
         arrivalTime,
       };
@@ -113,9 +117,9 @@ const ScanBarcodeRoute = (): JSX.Element => {
   }
 
   return (
-    <View>
+    <ScrollView style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={isScanned ? undefined : handleBarcodeScan}
+        onBarCodeScanned={handleBarcodeScan}
         style={styles.barCodeScan}
       />
       <View style={styles.buttonContainer}>
@@ -125,7 +129,7 @@ const ScanBarcodeRoute = (): JSX.Element => {
         <Button onPress={resetTime}>Remettre à zéro</Button>
       </View>
       <ScannedBarcodeList tagList={scannedBarcode} />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -137,7 +141,10 @@ const styles = StyleSheet.create({
   barCodeScan: {
     display: "flex",
     width: "100%",
-    height: "40%",
+    height: "20%",
+  },
+  container: {
+    flex: 1,
   },
 });
 
