@@ -45,7 +45,12 @@ class ExportController extends AbstractController
 
             $exportRepository->save($export);
 
-            return new Response($csv->getContent());
+            return new Response($csv->getContent(), 200, [
+                'Content-Encoding' => 'none',
+                'Content-Type' => 'text/csv; charset=UTF-8',
+                'Content-Disposition' => 'attachment; filename="' . $path . '"',
+                'Content-Description' => 'File Transfer',
+            ]);
         }
 
         return $this->render('export/new.html.twig', [
