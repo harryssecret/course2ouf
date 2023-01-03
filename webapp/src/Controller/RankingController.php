@@ -21,6 +21,21 @@ class RankingController extends AbstractController
         ]);
     }
 
+    #[Route('/rankBy={rankType}', name: 'app_ranking_rank_by', methods: ['GET'])]
+    public function rankBy(RankingRepository $rankingRepository, string $rankType): Response
+    {
+        $sortedRankings = match ($rankType) {
+            'vitesse' => $rankingRepository->getFastestRunners(),
+            'lent'  => $rankingRepository->getWorstRunners(),
+            'men'  => $rankingRepository->getMenRunners(),
+        };
+
+        return $this->render('ranking/index.html.twig', [
+            'rankings' => $sortedRankings,
+            
+        ]);
+    }
+
     #[Route('/new', name: 'app_ranking_new', methods: ['GET', 'POST'])]
     public function new(Request $request, RankingRepository $rankingRepository): Response
     {
