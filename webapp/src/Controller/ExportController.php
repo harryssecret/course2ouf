@@ -36,14 +36,16 @@ class ExportController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $scores = $rankingRepository->findAll();
-            $export->setCreatedAt(new DateTimeImmutable());
-            $path = $this->createExportCsv($sluggerInterface, $export->getCreatedAt(), $scores);
+            $creationDate = new DateTimeImmutable();
+            $export->setCreatedAt($creationDate);
+            $path = $sluggerInterface->slug($creationDate->format("d-m-Y_H:i:s")) . "-export.csv";
             $export->setPath($path);
+
+            $csv = $this->createExportCsv($path, $export->getCreatedAt(), $rankingRepository->findAll());
 
             $exportRepository->save($export);
 
-            $this->redirectToRoute("app_export", [], Response::HTTP_SEE_OTHER);
+            return new Response($csv->getContent());
         }
 
         return $this->render('export/new.html.twig', [
@@ -52,14 +54,12 @@ class ExportController extends AbstractController
         ]);
     }
 
-    public function createExportCsv(SluggerInterface $sluggerInterface, DateTimeImmutable $creationDate, array $scores): string
+    public function createExportCsv(string $filename, DateTimeImmutable $creationDate, array $scores): mixed
     {
         $header = ["student", "endRun", "Race"];
         $csv = Writer::createFromFileObject(new SplTempFileObject());
         $csv->insertOne($header);
         $csv->insertAll($scores);
-        $filename = $sluggerInterface->slug($creationDate->format("d-m-Y_H:i:s")) . "-export.csv";
-        $csv->output($filename);
-        return $filename;
+        return $csv;
     }
 }
