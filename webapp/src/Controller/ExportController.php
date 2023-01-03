@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Import;
+use App\Entity\export;
+use App\Entity\Ranking;
+use App\Form\ExportType;
 use App\Repository\ExportRepository;
 use App\Repository\RankingRepository;
+use League\Csv\Writer;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,19 +36,28 @@ class ExportController extends AbstractController
         ]);
     }
 
-    #Route("/add", name="app_export_add")
-    public function add(Request $request, RankingRepository $rankingRepository): Response
+    #[Route("/add", name: "app_export_add")]
+    public function add(Request $request, RankingRepository $rankingRepository, ExportRepository $exportRepository): Response
     {
-        $import = new Import();
-        $form = $this->createForm(ImportFormType::class, $import);
+        $export = new Export();
+        $form = $this->createForm(ExportType::class, $export);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $scores = $rankingRepository->findAll();
+            $export->setCreatedAt(new DateTimeImmutable());
         }
 
         return $this->render('export/add.html.twig', [
             'controller_name' => 'ExportController',
         ]);
+    }
+
+    public function createExportCsv(array $scores)
+    {
+        $header = ["student", "endRun", "Race"];
+        $csv = Writer::createFromString();
+        $csv->insertOne($header);
+        $csv->insertAll($scores);
     }
 }
