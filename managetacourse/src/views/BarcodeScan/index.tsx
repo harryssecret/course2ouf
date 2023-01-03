@@ -73,7 +73,7 @@ const ScanBarcodeRoute = (): JSX.Element => {
 
   const [hasPermission, setHasPermission] = useState<boolean>();
 
-  const startTimer = async () => {
+  const startTimer = () => {
     const startTime = new Date();
     setStartRunningTime(startTime);
     setIsChronoStarted(true);
@@ -96,7 +96,11 @@ const ScanBarcodeRoute = (): JSX.Element => {
   const handleBarcodeScan = ({ type, data }: BarCodeScannerResult) => {
     const currentTime = new Date();
     const arrivalTime = currentTime.getTime() - startRunningTime.getTime();
-    console.log(type, data);
+
+    if (scannedBarcode.some((barcode) => barcode.userBarcodeId === data)) {
+      return;
+    }
+
     if (data) {
       const newScannedBarcode: ScannedBarcodeInfosProps = {
         id: id++,
@@ -119,14 +123,35 @@ const ScanBarcodeRoute = (): JSX.Element => {
   return (
     <ScrollView style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={handleBarcodeScan}
+        onBarCodeScanned={isScanned ? undefined : handleBarcodeScan}
         style={styles.barCodeScan}
       />
+      {isScanned && (
+        <Portal>
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0,0,0,0.5)",
+            }}
+          >
+            <Text style={{ color: "white" }}>Code barre scanné</Text>
+            <Button mode="contained" onPress={() => setIsScanned(false)}>
+              OK
+            </Button>
+          </View>
+        </Portal>
+      )}
       <View style={styles.buttonContainer}>
         <Button icon="clock-outline" onPress={startTimer} mode="contained">
           Démarrer le timer
         </Button>
-        <Button onPress={resetTime}>Remettre à zéro</Button>
+        <Button onPress={resetTime}>Timer à zéro</Button>
       </View>
       <ScannedBarcodeList tagList={scannedBarcode} />
     </ScrollView>
@@ -139,12 +164,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   barCodeScan: {
-    display: "flex",
+    position: "relative",
     width: "100%",
-    height: "20%",
+    height: "30%",
   },
   container: {
     flex: 1,
+    width: "100%",
+    height: "100%",
   },
 });
 
