@@ -29,12 +29,16 @@ type ScannedTagListProps = {
  * @todo Add a list of the runners who didn't finished the race yet
  */
 export const ScannedBarcodeList = ({ tagList }: ScannedTagListProps) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const handlePress = () => setIsExpanded(!isExpanded);
   return (
     <List.Section title="Arrivées">
       <List.Accordion
         title="Dernières arrivées"
-        expanded={true}
+        expanded={isExpanded}
         left={(props) => <List.Icon {...props} icon="run" />}
+        onPress={handlePress}
       >
         {tagList.map((props) => (
           <ScannedTagInfoListElement {...props} />
