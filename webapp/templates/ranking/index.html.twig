@@ -4,6 +4,13 @@ block body %}
 
 <br>
 <div class="flex gap-4">
+    <select name="trier" id="ranking" multiple>
+        <option value="getFastestRunners">Du plus rapide</option>
+        <option value="getWorstRunners">Du plus lent</option>
+        <option value="getMenRunners">Homme</option>
+        <option value="getWomenRunners">Femme</option>
+        <option value="getWomenRunners">Classe</option>
+    </select>
     <a href="{{ path('app_student_new') }}">Trier</a>
 </div>
 <br>

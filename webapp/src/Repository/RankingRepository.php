@@ -75,6 +75,21 @@ class RankingRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->select('r')
+            ->innerJoin('App\Entity\Student', 's', 'WITH', 'r.Student = s.id')
+            ->where('s.gender = :Student')
+            ->setParameter('Student', 'Femme')
+            ->orderBy('r.endrun', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getGradeRunners(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r')
+            ->innerJoin('App\Entity\grade', 'g', 'WITH', 'r.grade = g.id')
+            ->where('g.gradename = :grade')
+            ->setParameter('grade', '')
             ->orderBy('r.endrun', 'ASC')
             ->getQuery()
             ->getResult();
