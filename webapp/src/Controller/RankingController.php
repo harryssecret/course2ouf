@@ -28,6 +28,8 @@ class RankingController extends AbstractController
             'vitesse' => $rankingRepository->getFastestRunners(),
             'lent'  => $rankingRepository->getWorstRunners(),
             'men'  => $rankingRepository->getMenRunners(),
+            'women'  => $rankingRepository->getWomenRunners(),
+            'grade'  => $rankingRepository->getGradeRunners(),
         };
 
         return $this->render('ranking/index.html.twig', [
