@@ -11,7 +11,7 @@ class ExportType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add("export", SubmitType::class);
+        $builder;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
