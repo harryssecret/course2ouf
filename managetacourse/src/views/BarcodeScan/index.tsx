@@ -62,12 +62,37 @@ type ScannedBarcodeInfosProps = {
   arrivalTime: number;
 };
 
+const Timer = ({ startRunningTime }: { startRunningTime: Date }) => {
+  const [time, setTime] = useState(new Date(0, 0, 0));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const currentTime = new Date();
+      const runningTime = currentTime.getTime() - startRunningTime.getTime();
+      const finalTime = new Date(runningTime);
+      setTime(finalTime);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [startRunningTime]);
+
+  return (
+    <View>
+      <Text>Temps écoulé :</Text>
+      <Text>
+        {time.getMinutes()}:{time.getSeconds()}:{time.getMilliseconds()}
+      </Text>
+    </View>
+  );
+};
+
 const ScanBarcodeRoute = (): JSX.Element => {
   const [isChronoStarted, setIsChronoStarted] = useState(false);
   const [startRunningTime, setStartRunningTime] = useState(new Date(0, 0, 0));
   const [scannedBarcode, setScannedBarcode] = useState<
     Array<ScannedBarcodeInfosProps>
   >([]);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [isScanned, setIsScanned] = useState(false);
   let id = 0;
 
@@ -80,9 +105,13 @@ const ScanBarcodeRoute = (): JSX.Element => {
   };
 
   const resetTime = () => {
+    console.log(scannedBarcode);
     setScannedBarcode([]);
     setIsChronoStarted(false);
   };
+
+  const hideModal = () => setIsScannerOpen(false);
+  const showModal = () => setIsScannerOpen(true);
 
   useEffect(() => {
     const getBarcodePermissions = async () => {
@@ -121,11 +150,29 @@ const ScanBarcodeRoute = (): JSX.Element => {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={isScanned ? undefined : handleBarcodeScan}
-        style={styles.barCodeScan}
-      />
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ justifyContent: "flex-end" }}
+    >
+      {isChronoStarted && <Timer startRunningTime={startRunningTime} />}
+      {isScannerOpen && (
+        <Portal>
+          <BarCodeScanner
+            onBarCodeScanned={isScanned ? undefined : handleBarcodeScan}
+            style={[StyleSheet.absoluteFillObject, styles.barcodeContainer]}
+          >
+            <Button
+              icon="close"
+              style={styles.closeButton}
+              onPress={hideModal}
+              mode="contained"
+            >
+              Fermer
+            </Button>
+          </BarCodeScanner>
+        </Portal>
+      )}
+
       {isScanned && (
         <Portal>
           <View
@@ -148,6 +195,9 @@ const ScanBarcodeRoute = (): JSX.Element => {
         </Portal>
       )}
       <View style={styles.buttonContainer}>
+        <Button icon="camera" onPress={showModal} mode="contained">
+          Lecteur de code barre
+        </Button>
         <Button icon="clock-outline" onPress={startTimer} mode="contained">
           Démarrer le timer
         </Button>
@@ -163,15 +213,19 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     alignItems: "center",
   },
-  barCodeScan: {
-    position: "relative",
-    width: "100%",
-    height: "30%",
+  barcodeContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 8,
   },
   container: {
     flex: 1,
-    width: "100%",
-    height: "100%",
+    flexDirection: "column",
+  },
+  closeButton: {
+    width: "70%",
+    textAlign: "center",
   },
 });
 
