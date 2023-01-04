@@ -68,7 +68,7 @@ class ExportController extends AbstractController
 
     public function createExportCsv(array $scores): mixed
     {
-        $header = ["student", "endRun", "Race"];
+        $header = ["Prenom", "Nom", "Genre", "Temps", "DateCourse"];
         $csv = Writer::createFromFileObject(new SplTempFileObject());
         $csv->insertOne($header);
         foreach ($scores as $score) {
@@ -77,6 +77,7 @@ class ExportController extends AbstractController
                 $score->getStudent()->getLastName(),
                 $score->getStudent()->getGender(),
                 $score->getEndRun()->format("H:i:s"),
+                $score->getRace()->getStart()->format("d-m-Y"),
             ]);
         }
         return $csv;
