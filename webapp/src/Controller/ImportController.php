@@ -91,18 +91,18 @@ class ImportController extends AbstractController
             $student->setFirstname($record["Prenom"]);
             $student->setLastname($record["Nom"]);
             $student->setGender($record["Sexe"]);
+            $gradeName = $record["Classe"];
 
             $grade = $gradeRepository->findOneBy([
-                "gradename" => $record["Classe"],
+                "gradename" => $gradeName,
             ]);
-            echo $grade;
-            if (isset($grade)) {
+            if ($grade != null) {
                 $student->setGrade($grade);
             } else {
-                $grade = new Grade();
-                $grade->setGradeName($record["Classe"]);
-                $gradeRepository->save($grade, true);
-                $student->setGrade($grade);
+                $newGrade = new Grade();
+                $newGrade->setgradename($gradeName);
+                $gradeRepository->save($newGrade, true);
+                $student->setGrade($newGrade);
             }
             $studentRepository->save($student, true);
         }
