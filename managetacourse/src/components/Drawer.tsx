@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Drawer as PaperDrawer, Text, Appbar } from "react-native-paper";
+import { Drawer as PaperDrawer, Appbar } from "react-native-paper";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -13,12 +13,12 @@ import {
 import { RootStackParamList } from "..";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Home from "../HomeView";
-import TagView from "../views/NfcScan";
+import BarcodeView from "../views/BarcodeScan";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerContent = (props: DrawerContentComponentProps) => {
-  const [active, setActive] = useState<string>("Accueil");
+  const [active, setActive] = useState("Accueil");
   return (
     <DrawerContentScrollView {...props}>
       <PaperDrawer.Section title="Général">
@@ -32,13 +32,13 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
           icon="home"
         />
         <PaperDrawer.Item
-          label="Tags"
+          label="Code barres"
           onPress={() => {
             props.navigation.navigate("Tags");
             setActive("Tags");
           }}
           active={active === "Tags"}
-          icon="tag"
+          icon="barcode"
         />
       </PaperDrawer.Section>
     </DrawerContentScrollView>
@@ -47,9 +47,13 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
 
 export const RootNavigator = () => {
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    <Drawer.Navigator
+      drawerContent={(props: DrawerContentComponentProps) => (
+        <DrawerContent {...props} />
+      )}
+    >
       <Drawer.Screen name="Accueil" component={Home} />
-      <Drawer.Screen name="Tags" component={TagView} />
+      <Drawer.Screen name="Tags" component={BarcodeView} />
     </Drawer.Navigator>
   );
 };
@@ -61,12 +65,12 @@ export const DrawerStack = () => {
     <Stack.Navigator
       initialRouteName="Accueil"
       screenOptions={{
-        header: (props) => <Header {...props} />,
+        header: (props: StackHeaderProps) => <Header {...props} />,
         headerMode: "screen",
       }}
     >
       <Stack.Screen name="Accueil" component={Home} />
-      <Stack.Screen name="Tags" component={TagView} />
+      <Stack.Screen name="Barcodes" component={BarcodeView} />
     </Stack.Navigator>
   );
 };

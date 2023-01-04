@@ -1,16 +1,34 @@
 # course2ouf - une application pour gérer vos cross
 
-course2ouf est une application qui permet de simplifier l'organisation des cross organisés par les établissements scolaires. Il se base sur les librairies Symfony, 
+course2ouf est une application qui permet de simplifier l'organisation des cross organisés par les établissements scolaires. Il se base sur les librairies Symfony,
 
-Vous pouvez retrouver l'intégralité des documents utilisés pour la réalisation de ce projet pour notre BTS à [cette adresse](https://cloud.ndlaprovidence.org/index.php/apps/files/?dir=/Documents/SIO2/ProjetNum2Sio&fileid=145720). 
+Vous pouvez retrouver l'intégralité des documents utilisés pour la réalisation de ce projet pour notre BTS à [cette adresse](https://cloud.ndlaprovidence.org/index.php/apps/files/?dir=/Documents/SIO2/ProjetNum2Sio&fileid=145720).
 
 ## Table des matières
-1) [Installation](#installation)
-   1) [Installation manuelle]()
-2) [Licence](#licence)
+
+- [course2ouf - une application pour gérer vos cross](#course2ouf---une-application-pour-gérer-vos-cross)
+  - [Table des matières](#table-des-matières)
+  - [Installation](#installation)
+    - [Installation avec Docker](#installation-avec-docker)
+    - [Installation manuelle](#installation-manuelle)
+  - [Licence](#licence)
 
 ## Installation
+
+Il existe deux moyens d'héberger l'application Symfony, vous pouvez soit le faire traditionnellement, soit utiliser Docker. Docker est celle que nous recommandons, car il n'y a pas besoin de se prendre la tête avec les dépendances etc.
+
+### Installation avec Docker
+
+Assurez vous d'avoir Docker et un minimum de stockage disponible afin de construire l'image. La compatibilité avec les sytèmes x86_64 est la seule étant fonctionelle à ce que je sache. Il faut commencer par cloner le projet, construire l'image, puis lancer les autres services grâce à `docker compose`.
+
+```bash
+cd webapp/
+docker compose build --no-cache --pull
+docker compose up -d
+```
+
 ### Installation manuelle
+
 Cette section est en cours de création. Merci de revenir plus tard!
 
 ## Licence

@@ -2,7 +2,7 @@ import { List } from "react-native-paper";
 import React, { useState } from "react";
 
 type ScannedTagInfosProps = {
-  nfcCardId: string | undefined;
+  userBarcodeId: string | undefined;
   arrivalTime: number;
 };
 
@@ -10,13 +10,13 @@ type ScannedTagInfosProps = {
  * @todo add a route to the details of the runner
  */
 const ScannedTagInfoListElement = ({
-  nfcCardId,
+  userBarcodeId: barcodeId,
   arrivalTime,
 }: ScannedTagInfosProps) => {
   const localTime = new Date(arrivalTime);
   return (
     <List.Item
-      title={`${nfcCardId}, temps : ${localTime.getMinutes()}m${localTime.getSeconds()}s`}
+      title={`${barcodeId}, temps : ${localTime.getMinutes()}m${localTime.getSeconds()}s`}
     />
   );
 };
@@ -28,13 +28,17 @@ type ScannedTagListProps = {
 /*
  * @todo Add a list of the runners who didn't finished the race yet
  */
-export const ScannedTagList = ({ tagList }: ScannedTagListProps) => {
+export const ScannedBarcodeList = ({ tagList }: ScannedTagListProps) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const handlePress = () => setIsExpanded(!isExpanded);
   return (
     <List.Section title="Arrivées">
       <List.Accordion
         title="Dernières arrivées"
-        expanded={true}
+        expanded={isExpanded}
         left={(props) => <List.Icon {...props} icon="run" />}
+        onPress={handlePress}
       >
         {tagList.map((props) => (
           <ScannedTagInfoListElement {...props} />
