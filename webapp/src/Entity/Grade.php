@@ -16,12 +16,6 @@ class Grade
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $shortname = null;
-
-    #[ORM\Column]
-    private ?int $level = null;
-
     #[ORM\OneToMany(mappedBy: "Grade", targetEntity: Student::class)]
     private Collection $students;
 
