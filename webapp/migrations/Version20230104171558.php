@@ -10,24 +10,27 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230103202816 extends AbstractMigration
+final class Version20230104171558 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'added custom barcode id generation';
+        return 'removed shortname and level rows';
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE tbl_student ADD barcode_id UUID DEFAULT NULL');
-        $this->addSql('COMMENT ON COLUMN tbl_student.barcode_id IS \'(DC2Type:ulid)\'');
+        $this->addSql('ALTER TABLE tbl_grade DROP shortname');
+        $this->addSql('ALTER TABLE tbl_grade DROP level');
+        $this->addSql('ALTER TABLE tbl_student ALTER time_goal DROP NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE tbl_student DROP barcode_id');
+        $this->addSql('ALTER TABLE tbl_grade ADD shortname VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE tbl_grade ADD level INT NOT NULL');
+        $this->addSql('ALTER TABLE tbl_student ALTER time_goal SET NOT NULL');
     }
 }
