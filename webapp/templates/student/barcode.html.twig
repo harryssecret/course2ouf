@@ -1,0 +1,11 @@
+{% for barcode in barcodes %}
+<div style="margin-bottom: 12px">
+    <img
+        src="data:image/png;base64,{{ barcode.image }}"
+        alt="Code barre de l'identifiant de l'étudiant"
+    />
+    <p>^^{{ barcode.studentName }}</p>
+</div>
+{% else %}
+<p>Aucun code barre trouvé</p>
+{% endfor %}

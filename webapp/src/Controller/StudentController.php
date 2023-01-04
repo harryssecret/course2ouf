@@ -8,6 +8,8 @@ use App\Repository\StudentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Component\Routing\Annotation\Route;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
@@ -47,7 +49,7 @@ class StudentController extends AbstractController
         ]);
     }
 
-    #[Route("/{id}", name: "app_student_show", methods: ["GET"])]
+    #[Route("/show/{id}", name: "app_student_show", methods: ["GET"])]
     public function show(Student $student): Response
     {
         $generator = new BarcodeGeneratorPNG();
@@ -63,7 +65,7 @@ class StudentController extends AbstractController
         ]);
     }
 
-    #[Route("/{id}/edit", name: "app_student_edit", methods: ["GET", "POST"])]
+    #[Route("/edit/{id}", name: "app_student_edit", methods: ["GET", "POST"])]
     public function edit(
         Request $request,
         Student $student,
@@ -88,7 +90,7 @@ class StudentController extends AbstractController
         ]);
     }
 
-    #[Route("/{id}", name: "app_student_delete", methods: ["POST"])]
+    #[Route("/delete/{id}", name: "app_student_delete", methods: ["POST"])]
     public function delete(
         Request $request,
         Student $student,
@@ -108,5 +110,47 @@ class StudentController extends AbstractController
             [],
             Response::HTTP_SEE_OTHER
         );
+    }
+
+
+    #[Route("/barcode", name: "app_student_barcode", methods: ["GET"])]
+    public function barcode(StudentRepository $studentRepository): Response
+    {
+        // generate a html page with all barcodes and then convert it to pdf
+        $students = $studentRepository->findAll();
+        $generator = new BarcodeGeneratorPNG();
+        $barcodes = [];
+        foreach ($students as $student) {
+            $barcode = $generator->getBarcode(
+                $student->getBarcodeId(),
+                $generator::TYPE_CODE_128
+            );
+            $encodedBarcode = base64_encode($barcode);
+            array_push(
+                $barcodes,
+                ["image" => $encodedBarcode, "studentName" => $student->getFirstname() . " " . $student->getLastname()],
+            );
+        }
+
+        $html = $this->renderView("student/barcode.html.twig", [
+            "barcodes" => $barcodes,
+        ]);
+
+        $pdfOptions = new Options();
+        $pdfOptions->set("defaultFont", "Arial");
+
+        $dompdf = new Dompdf($pdfOptions);
+        $dompdf->loadHtml($html);
+
+        $dompdf->setPaper("A4", "landscape");
+
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        return new Response($output, 200, [
+            "Content-Type" => "application/pdf",
+            "Content-Disposition" => "inline; filename=barcodes.pdf",
+        ]);
     }
 }
