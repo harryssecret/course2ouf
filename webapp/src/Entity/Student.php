@@ -27,7 +27,7 @@ class Student
     #[ORM\Column(length: 255)]
     private ?string $gender = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $TimeGoal = null;
 
     #[ORM\ManyToOne(inversedBy: "students")]
@@ -56,7 +56,7 @@ class Student
 
     public function setFirstname(string $firstname): self
     {
-        $this->firstname = $firstname;
+        $this->firstname = ucfirst($firstname);
 
         return $this;
     }
@@ -68,7 +68,7 @@ class Student
 
     public function setLastname(string $lastname): self
     {
-        $this->lastname = $lastname;
+        $this->lastname = ucfirst($lastname);
 
         return $this;
     }
@@ -150,10 +150,9 @@ class Student
 
         return $this;
     }
-}
 
-enum Gender: string
-{
-    case Male = "Homme";
-    case Female = "Femme";
+    public function __toString()
+    {
+        return $this->firstname . " " . $this->lastname;
+    }
 }
