@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\export;
-use App\Entity\Ranking;
 use App\Form\ExportType;
 use App\Repository\ExportRepository;
 use App\Repository\RankingRepository;
@@ -16,21 +15,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/export')]
+#[Route("/export")]
 class ExportController extends AbstractController
 {
-    #[Route('/', name: 'app_export')]
+    #[Route("/", name: "app_export")]
     public function index(ExportRepository $exportRepository): Response
     {
-        return $this->render('export/index.html.twig', [
-            'controller_name' => 'ExportController',
-            'exports' => $exportRepository->findAll(),
+        return $this->render("export/index.html.twig", [
+            "controller_name" => "ExportController",
+            "exports" => $exportRepository->findAll(),
         ]);
     }
 
     #[Route("/new", name: "app_export_add", methods: ["GET", "POST"])]
-    public function new(Request $request, RankingRepository $rankingRepository, ExportRepository $exportRepository, SluggerInterface $sluggerInterface): Response
-    {
+    public function new(
+        Request $request,
+        RankingRepository $rankingRepository,
+        ExportRepository $exportRepository,
+        SluggerInterface $sluggerInterface
+    ): Response {
         $export = new Export();
         $form = $this->createForm(ExportType::class, $export);
         $form->handleRequest($request);
@@ -38,35 +41,44 @@ class ExportController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $creationDate = new DateTimeImmutable();
             $export->setCreatedAt($creationDate);
-            $path = $sluggerInterface->slug($creationDate->format("d-m-Y_H:i:s")) . "-export.csv";
+            $path =
+                $sluggerInterface->slug($creationDate->format("d-m-Y_H:i:s")) .
+                "-export.csv";
             $export->setPath($path);
 
-            $csv = $this->createExportCsv($path, $export->getCreatedAt(), $rankingRepository->findAll());
+            $csv = $this->createExportCsv($rankingRepository->findAll());
 
             $exportRepository->save($export);
 
             // TODO : store exports in a folder
 
-            return new Response($csv->getContent(), 200, [
-                'Content-Encoding' => 'none',
-                'Content-Type' => 'text/csv; charset=UTF-8',
-                'Content-Disposition' => 'attachment; filename="' . $path . '"',
-                'Content-Description' => 'File Transfer',
+            return new Response($csv->output($path), 200, [
+                "Content-Encoding" => "none",
+                "Content-Type" => "text/csv; charset=UTF-8",
+                "Content-Disposition" => 'attachment; filename="' . $path . '"',
+                "Content-Description" => "File Transfer",
             ]);
         }
 
-        return $this->render('export/new.html.twig', [
-            'form' => $form->createView(),
-            'controller_name' => 'ExportController',
+        return $this->render("export/new.html.twig", [
+            "form" => $form->createView(),
+            "controller_name" => "ExportController",
         ]);
     }
 
-    public function createExportCsv(string $filename, DateTimeImmutable $creationDate, array $scores): mixed
+    public function createExportCsv(array $scores): mixed
     {
         $header = ["student", "endRun", "Race"];
         $csv = Writer::createFromFileObject(new SplTempFileObject());
         $csv->insertOne($header);
-        $csv->insertAll($scores);
+        foreach ($scores as $score) {
+            $csv->insertOne([
+                $score->getStudent()->getFirstName(),
+                $score->getStudent()->getLastName(),
+                $score->getStudent()->getGender(),
+                $score->getEndRun()->format("H:i:s"),
+            ]);
+        }
         return $csv;
     }
 }
