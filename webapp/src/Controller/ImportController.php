@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Import;
 use App\Entity\Student;
+use App\Entity\Grade;
 use App\Form\ImportFormType;
 use App\Repository\GradeRepository;
 use App\Repository\ImportRepository;
+use League\Csv\Reader;
 use App\Repository\StudentRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -83,43 +85,26 @@ class ImportController extends AbstractController
         GradeRepository $gradeRepository
     ) {
         $csvLocation = "../uploads/csv_imports/" . $import->getFilePath();
-        $studentArray = [];
-        if (($handle = fopen($csvLocation, "r")) !== false) {
-            while (($data = fgetcsv($handle)) !== false) {
-                var_dump($data);
-                $firstName = $data[0];
-                $lastName = $data[1];
-                $gender = $data[2];
-                $grade = $gradeRepository->findByGradeName($data[3]);
+        $csv = Reader::createFromPath($csvLocation)->setHeaderOffset(0);
+        foreach ($csv as $record) {
+            $student = new Student();
+            $student->setFirstname($record["Prenom"]);
+            $student->setLastname($record["Nom"]);
+            $student->setGender($record["Sexe"]);
 
-                if (!(isset($grade))) {
-                    return;
-                }
-
-                $student = new Student();
-                $student->setFirstname($firstName);
-                $student->setLastname($lastName);
+            $grade = $gradeRepository->findOneBy([
+                "gradename" => $record["Classe"],
+            ]);
+            echo $grade;
+            if (isset($grade)) {
                 $student->setGrade($grade);
-
-                switch ($gender) {
-                    case "Homme":
-                    case "homme":
-                    case "h":
-                    case "H":
-                        $student->setGender("Homme");
-                        break;
-
-                    case "Femme":
-                    case "femme":
-                    case "F":
-                    case "f":
-                        $student->setGender("Femme");
-                        break;
-                }
-
-                $studentRepository->save($student, true);
+            } else {
+                $grade = new Grade();
+                $grade->setGradeName($record["Classe"]);
+                $gradeRepository->save($grade, true);
+                $student->setGrade($grade);
             }
-            fclose($handle);
+            $studentRepository->save($student, true);
         }
     }
 }
