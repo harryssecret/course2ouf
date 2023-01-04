@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Uid\Ulid;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
 #[Route("/student")]
@@ -29,7 +28,6 @@ class StudentController extends AbstractController
         StudentRepository $studentRepository
     ): Response {
         $student = new Student();
-        $student->setBarcodeId(new Ulid());
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 
@@ -53,10 +51,11 @@ class StudentController extends AbstractController
     public function show(Student $student): Response
     {
         $generator = new BarcodeGeneratorPNG();
-        $encodedBarcode = $generator->getBarcode(
+        $barcode = $generator->getBarcode(
             $student->getBarcodeId(),
             $generator::TYPE_CODE_128
         );
+        $encodedBarcode = base64_encode($barcode);
 
         return $this->render("student/show.html.twig", [
             "student" => $student,
