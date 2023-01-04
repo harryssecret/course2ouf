@@ -87,9 +87,9 @@ class RankingRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->select('r')
-            ->innerJoin('App\Entity\grade', 'g', 'WITH', 'r.grade = g.id')
-            ->where('g.gradename = :grade')
-            ->setParameter('grade', '')
+            ->innerJoin('App\Entity\Grade', 'g', 'WITH', 'r.Grade = g.id')
+            ->where('g.gradename = :Grade')
+            ->setParameter('Grade','gradename')
             ->orderBy('r.endrun', 'ASC')
             ->getQuery()
             ->getResult();

@@ -18,6 +18,7 @@ class RankingType extends AbstractType
             ])
             ->add('Race')
             ->add('Student');
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

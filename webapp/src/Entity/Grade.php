@@ -22,9 +22,13 @@ class Grade
     #[ORM\Column(length: 255)]
     private ?string $gradename = null;
 
+    #[ORM\ManyToMany(targetEntity: Ranking::class, mappedBy: 'Grade')]
+    private Collection $rankings;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->rankings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,5 +81,32 @@ class Grade
     public function __toString()
     {
         return $this->gradename;
+    }
+
+    /**
+     * @return Collection<int, Ranking>
+     */
+    public function getRankings(): Collection
+    {
+        return $this->rankings;
+    }
+
+    public function addRanking(Ranking $ranking): self
+    {
+        if (!$this->rankings->contains($ranking)) {
+            $this->rankings->add($ranking);
+            $ranking->addGrade($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRanking(Ranking $ranking): self
+    {
+        if ($this->rankings->removeElement($ranking)) {
+            $ranking->removeGrade($this);
+        }
+
+        return $this;
     }
 }
