@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %} {% block title %}Ranking index{% endblock %} {%
 block body %}
-<h1>Ranking index</h1>
+<h1 class="text-xl">Ranking index</h1>
 
-<br>
-<div class="flex gap-4">
-    <a href="rankBy=vitesse">Trier par vitesse croissante</a>
-    <a href="rankBy=lent">Trier par vitesse décroissante</a>
-    <a href="rankBy=men">Trier les Hommes</a>
-    <a href="rankBy=women">Trier les Femmes</a>
-    <a href="rankBy=grade">Trier en fonction des classes</a>
+<br />
+<div class="btn-group flex">
+    <a class="btn" href="rankBy=vitesse">Trier par vitesse croissante</a>
+    <a class="btn" href="rankBy=lent">Trier par vitesse décroissante</a>
+    <a class="btn" href="rankBy=men">Trier les Hommes</a>
+    <a class="btn" href="rankBy=women">Trier les Femmes</a>
+    <a class="btn" href="rankBy=grade">Trier en fonction des classes</a>
 </div>
-<br>
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -46,5 +46,5 @@ block body %}
     </tbody>
 </table>
 
-<a href="{{ path('app_ranking_new') }}">Create new</a>
+<a class="btn" href="{{ path('app_ranking_new') }}">Create new</a>
 {% endblock %}
