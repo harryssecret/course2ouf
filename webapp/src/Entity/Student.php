@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: "tbl_student")]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
@@ -26,7 +27,7 @@ class Student
     #[ORM\Column(length: 255)]
     private ?string $gender = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $TimeGoal = null;
 
     #[ORM\ManyToOne(inversedBy: "students")]
@@ -34,6 +35,9 @@ class Student
 
     #[ORM\OneToMany(mappedBy: "Student", targetEntity: Ranking::class)]
     private ?Collection $rankings = null;
+
+    #[ORM\Column(type: 'ulid', nullable: true)]
+    private ?Ulid $barcodeId = null;
 
     public function __construct()
     {
@@ -52,7 +56,7 @@ class Student
 
     public function setFirstname(string $firstname): self
     {
-        $this->firstname = $firstname;
+        $this->firstname = ucfirst($firstname);
 
         return $this;
     }
@@ -64,7 +68,7 @@ class Student
 
     public function setLastname(string $lastname): self
     {
-        $this->lastname = $lastname;
+        $this->lastname = ucfirst($lastname);
 
         return $this;
     }
@@ -134,10 +138,21 @@ class Student
 
         return $this;
     }
-}
 
-enum Gender: string
-{
-    case Male = "Homme";
-    case Female = "Femme";
+    public function getBarcodeId(): ?Ulid
+    {
+        return $this->barcodeId;
+    }
+
+    public function setBarcodeId(?Ulid $barcodeId): self
+    {
+        $this->barcodeId = $barcodeId;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->firstname . " " . $this->lastname;
+    }
 }

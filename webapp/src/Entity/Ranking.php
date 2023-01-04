@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RankingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource]
 #[ORM\Table(name: "tbl_ranking")]
 #[ORM\Entity(repositoryClass: RankingRepository::class)]
 class Ranking
@@ -23,6 +27,14 @@ class Ranking
 
     #[ORM\ManyToOne(inversedBy: "rankings")]
     private ?Student $Student = null;
+
+    #[ORM\ManyToMany(targetEntity: Grade::class, inversedBy: 'rankings')]
+    private Collection $Grade;
+
+    public function __construct()
+    {
+        $this->Grade = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +73,30 @@ class Ranking
     public function setStudent(?Student $Student): self
     {
         $this->Student = $Student;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Grade>
+     */
+    public function getGrade(): Collection
+    {
+        return $this->Grade;
+    }
+
+    public function addGrade(Grade $grade): self
+    {
+        if (!$this->Grade->contains($grade)) {
+            $this->Grade->add($grade);
+        }
+
+        return $this;
+    }
+
+    public function removeGrade(Grade $grade): self
+    {
+        $this->Grade->removeElement($grade);
 
         return $this;
     }

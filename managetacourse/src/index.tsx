@@ -18,7 +18,7 @@ const theme = {
 
 export type RootStackParamList = {
   Accueil: undefined;
-  Tags: undefined;
+  Barcodes: undefined;
 };
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
