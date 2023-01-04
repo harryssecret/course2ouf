@@ -21,12 +21,15 @@ body %}
 </table>
 
 <h2>Code barre</h2>
-<img
-    src="data:image/png;base64,{{ student.barcodeImage }}"
-    alt="Code barre de l'identifiant de l'étudiant {{ student.firstname }} {{
-        student.lastname
-    }}"
-/>
+<div class="flex flex-col items-center justify-center">
+    <img
+        src="data:image/png;base64,{{ barcodeImage }}"
+        alt="Code barre de l'identifiant de l'étudiant {{
+            student.firstname
+        }} {{ student.lastname }}"
+    />
+    <p>{{ student.barcodeId }}</p>
+</div>
 
 <a href="{{ path('app_student_index') }}">back to list</a>
 <div class="btn-group flex">
