@@ -95,7 +95,6 @@ class RankingRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
     //    /**
     //     * @return Ranking[] Returns an array of Ranking objects
     //     */

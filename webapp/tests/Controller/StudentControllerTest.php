@@ -12,12 +12,14 @@ class StudentControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private StudentRepository $repository;
-    private string $path = '/student/';
+    private string $path = "/student/";
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        $this->repository = static::getContainer()->get('doctrine')->getRepository(Student::class);
+        $this->repository = static::getContainer()
+            ->get("doctrine")
+            ->getRepository(Student::class);
 
         foreach ($this->repository->findAll() as $object) {
             $this->repository->remove($object, true);
@@ -26,10 +28,10 @@ class StudentControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
-        $crawler = $this->client->request('GET', $this->path);
+        $crawler = $this->client->request("GET", $this->path);
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Student index');
+        self::assertPageTitleContains("Student index");
 
         // Use the $crawler to perform additional assertions e.g.
         // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
@@ -40,36 +42,42 @@ class StudentControllerTest extends WebTestCase
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
         $this->markTestIncomplete();
-        $this->client->request('GET', sprintf('%snew', $this->path));
+        $this->client->request("GET", sprintf("%snew", $this->path));
 
         self::assertResponseStatusCodeSame(200);
 
-        $this->client->submitForm('Save', [
-            'student[firstname]' => 'Testing',
-            'student[lastname]' => 'Testing',
-            'student[gender]' => 'Testing',
-            'student[Grade]' => 'Testing',
+        $this->client->submitForm("Save", [
+            "student[firstname]" => "Testing",
+            "student[lastname]" => "Testing",
+            "student[gender]" => "Testing",
+            "student[Grade]" => "Testing",
         ]);
 
-        self::assertResponseRedirects('/student/');
+        self::assertResponseRedirects("/student/");
 
-        self::assertSame($originalNumObjectsInRepository + 1, count($this->repository->findAll()));
+        self::assertSame(
+            $originalNumObjectsInRepository + 1,
+            count($this->repository->findAll())
+        );
     }
 
     public function testShow(): void
     {
         $this->markTestIncomplete();
         $fixture = new Student();
-        $fixture->setFirstname('My Title');
-        $fixture->setLastname('My Title');
-        $fixture->setGender('Male');
+        $fixture->setFirstname("My Title");
+        $fixture->setLastname("My Title");
+        $fixture->setGender("Male");
 
         $this->repository->save($fixture, true);
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request(
+            "GET",
+            sprintf("%s%s", $this->path, $fixture->getId())
+        );
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Student');
+        self::assertPageTitleContains("Student");
 
         // Use assertions to check that the properties are properly displayed.
     }
@@ -78,29 +86,32 @@ class StudentControllerTest extends WebTestCase
     {
         $this->markTestIncomplete();
         $fixture = new Student();
-        $fixture->setFirstname('My Title');
-        $fixture->setLastname('My Title');
-        $fixture->setGender('My Title');
+        $fixture->setFirstname("My Title");
+        $fixture->setLastname("My Title");
+        $fixture->setGender("My Title");
 
         $this->repository->save($fixture, true);
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+        $this->client->request(
+            "GET",
+            sprintf("%s%s/edit", $this->path, $fixture->getId())
+        );
 
-        $this->client->submitForm('Update', [
-            'student[firstname]' => 'Something New',
-            'student[lastname]' => 'Something New',
-            'student[gender]' => 'Something New',
-            'student[Grade]' => 'Something New',
+        $this->client->submitForm("Update", [
+            "student[firstname]" => "Something New",
+            "student[lastname]" => "Something New",
+            "student[gender]" => "Something New",
+            "student[Grade]" => "Something New",
         ]);
 
-        self::assertResponseRedirects('/student/');
+        self::assertResponseRedirects("/student/");
 
         $fixture = $this->repository->findAll();
 
-        self::assertSame('Something New', $fixture[0]->getFirstname());
-        self::assertSame('Something New', $fixture[0]->getLastname());
-        self::assertSame('Something New', $fixture[0]->getGender());
-        self::assertSame('Something New', $fixture[0]->getGrade());
+        self::assertSame("Something New", $fixture[0]->getFirstname());
+        self::assertSame("Something New", $fixture[0]->getLastname());
+        self::assertSame("Something New", $fixture[0]->getGender());
+        self::assertSame("Something New", $fixture[0]->getGrade());
     }
 
     public function testRemove(): void
@@ -110,18 +121,27 @@ class StudentControllerTest extends WebTestCase
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
         $fixture = new Student();
-        $fixture->setFirstname('My Title');
-        $fixture->setLastname('My Title');
-        $fixture->setGender('Homme');
+        $fixture->setFirstname("My Title");
+        $fixture->setLastname("My Title");
+        $fixture->setGender("Homme");
 
         $this->repository->save($fixture, true);
 
-        self::assertSame($originalNumObjectsInRepository + 1, count($this->repository->findAll()));
+        self::assertSame(
+            $originalNumObjectsInRepository + 1,
+            count($this->repository->findAll())
+        );
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-        $this->client->submitForm('Delete');
+        $this->client->request(
+            "GET",
+            sprintf("%s%s", $this->path, $fixture->getId())
+        );
+        $this->client->submitForm("Delete");
 
-        self::assertSame($originalNumObjectsInRepository, count($this->repository->findAll()));
-        self::assertResponseRedirects('/student/');
+        self::assertSame(
+            $originalNumObjectsInRepository,
+            count($this->repository->findAll())
+        );
+        self::assertResponseRedirects("/student/");
     }
 }

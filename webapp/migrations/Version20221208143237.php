@@ -14,19 +14,19 @@ final class Version20221208143237 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return "";
     }
 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE tbl_student DROP mas');
+        $this->addSql("ALTER TABLE tbl_student DROP mas");
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE tbl_student ADD mas INT NOT NULL');
+        $this->addSql("CREATE SCHEMA public");
+        $this->addSql("ALTER TABLE tbl_student ADD mas INT NOT NULL");
     }
 }

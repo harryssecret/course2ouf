@@ -22,10 +22,10 @@ class Ranking
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $endrun = null;
 
-    #[ORM\ManyToOne(inversedBy: 'rankings')]
+    #[ORM\ManyToOne(inversedBy: "rankings")]
     private ?Race $Race = null;
 
-    #[ORM\ManyToOne(inversedBy: 'rankings')]
+    #[ORM\ManyToOne(inversedBy: "rankings")]
     private ?Student $Student = null;
 
     #[ORM\ManyToMany(targetEntity: Grade::class, inversedBy: 'rankings')]

@@ -1,4 +1,9 @@
-{{form_start(form)}}
-{{form_row(form.csvFile)}}
-<input type="submit" value="Envoyer">
+{{ form_start(form) }}
+<div class="form-control w-full max-w-xs">
+    <label class="label">
+        <span class="label-text">{{ form_label(form.csvFile) }}</span>
+    </label>
+    {{ form_widget(form.csvFile, {'attr': {'class': 'file-input file-input-bordered w-full max-w-xs'}}) }}
+</div>
+<input class="btn btn-primary" type="submit" value="Envoyer" />
 {{ form_end(form) }}

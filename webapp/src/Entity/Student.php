@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Ulid;
 
 #[ORM\Table(name: "tbl_student")]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
@@ -29,11 +30,14 @@ class Student
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $TimeGoal = null;
 
-    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\ManyToOne(inversedBy: "students")]
     private ?Grade $Grade = null;
 
-    #[ORM\OneToMany(mappedBy: 'Student', targetEntity: Ranking::class)]
+    #[ORM\OneToMany(mappedBy: "Student", targetEntity: Ranking::class)]
     private ?Collection $rankings = null;
+
+    #[ORM\Column(type: 'ulid', nullable: true)]
+    private ?Ulid $barcodeId = null;
 
     public function __construct()
     {
@@ -134,6 +138,19 @@ class Student
 
         return $this;
     }
+
+    public function getBarcodeId(): ?Ulid
+    {
+        return $this->barcodeId;
+    }
+
+    public function setBarcodeId(?Ulid $barcodeId): self
+    {
+        $this->barcodeId = $barcodeId;
+
+        return $this;
+    }
+}
 
     public function __toString()
     {

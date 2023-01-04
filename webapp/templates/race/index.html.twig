@@ -3,8 +3,13 @@
 {% block title %}Courses{% endblock %}
 
 {% block body %}
-    <h1>Liste des courses</h1>
-
+    <h1 class="text-3xl">Liste des courses</h1>
+    <div class="flex flex-col gap-2 my-4">
+        <h2 class="text-xl">Actions</h2>
+        <div>
+            <a class="btn" href="{{ path('app_race_new') }}">Nouvelle course</a>
+            </div>  
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -17,7 +22,7 @@
         {% for race in races %}
             <tr>
                 <td>{{ race.id }}</td>
-                <td>{{ race.start ? race.start|date('Y-m-d') : '' }}</td>
+                <td>{{ race.start ? race.start|date('d-m-Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_race_show', {'id': race.id}) }}">show</a>
                     <a href="{{ path('app_race_edit', {'id': race.id}) }}">edit</a>
@@ -31,5 +36,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_race_new') }}">Create new</a>
 {% endblock %}

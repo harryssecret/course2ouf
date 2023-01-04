@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "plugins": [
-      "react-native-nfc-manager"
     ],
     "userInterfaceStyle": "light",
     "splash": {
@@ -29,7 +28,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
-        "android.permission.NFC"
+        "CAMERA"
       ],
       "package": "me.course2ouf.managetacourse"
     },
