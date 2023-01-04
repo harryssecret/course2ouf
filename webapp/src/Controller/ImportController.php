@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Gender;
 use App\Entity\Import;
 use App\Entity\Student;
 use App\Form\ImportFormType;
+use App\Repository\GradeRepository;
 use App\Repository\ImportRepository;
 use App\Repository\StudentRepository;
 use DateTimeImmutable;
-use DateTimeZone;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +33,8 @@ class ImportController extends AbstractController
         Request $request,
         SluggerInterface $slugger,
         ImportRepository $importRepository,
-        StudentRepository $studentRepository
+        StudentRepository $studentRepository,
+        GradeRepository $gradeRepository
     ): Response {
         $import = new Import();
         $form = $this->createForm(ImportFormType::class, $import);
@@ -68,7 +68,7 @@ class ImportController extends AbstractController
             $import->setFilePath($newFilename);
             $import->setUploadedAt(new DateTimeImmutable("now"));
             $importRepository->save($import, true);
-            $this->importCsv($import, $studentRepository);
+            $this->importCsv($import, $studentRepository, $gradeRepository);
             $this->redirectToRoute("app_import");
         }
 
@@ -79,7 +79,8 @@ class ImportController extends AbstractController
 
     private function importCsv(
         Import $import,
-        StudentRepository $studentRepository
+        StudentRepository $studentRepository,
+        GradeRepository $gradeRepository
     ) {
         $csvLocation = "../uploads/csv_imports/" . $import->getFilePath();
         $studentArray = [];
@@ -89,10 +90,16 @@ class ImportController extends AbstractController
                 $firstName = $data[0];
                 $lastName = $data[1];
                 $gender = $data[2];
+                $grade = $gradeRepository->findByGradeName($data[3]);
+
+                if (!(isset($grade))) {
+                    return;
+                }
 
                 $student = new Student();
                 $student->setFirstname($firstName);
                 $student->setLastname($lastName);
+                $student->setGrade($grade);
 
                 switch ($gender) {
                     case "Homme":
