@@ -76,11 +76,15 @@ const Timer = ({ startRunningTime }: { startRunningTime: Date }) => {
     return () => clearInterval(timer);
   }, [startRunningTime]);
 
+  const minutes = time.getMinutes().toString().padStart(2, "0");
+  const seconds = time.getSeconds().toString().padStart(2, "0");
+  const milliseconds = time.getMilliseconds().toString().padStart(2, "0");
+
   return (
     <View>
       <Text>Temps écoulé :</Text>
       <Text>
-        {time.getMinutes()}:{time.getSeconds()}:{time.getMilliseconds()}
+        {minutes}:{seconds}:{milliseconds}
       </Text>
     </View>
   );
