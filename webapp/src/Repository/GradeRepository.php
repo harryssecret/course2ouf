@@ -39,6 +39,15 @@ class GradeRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByGradeName(string $grade): Grade
+    {
+        return $this->createQueryBuilder("g")
+            ->andWhere("g.shortname = :grade")
+            ->setParameter(":grade", $grade)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Grade[] Returns an array of Grade objects
     //     */
