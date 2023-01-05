@@ -47,12 +47,15 @@
                     <div class="flex-none">
                         <ul class="menu menu-horizontal p-0">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <p>connecté</p>
-                            {% endif %}
-
+                            <li>
+                                <a href="/logout">Se déconnecter</a>
+                            </li>
+                            {% else %}
                             <li>
                                 <a href="/login">Se connecter</a>
                             </li>
+
+                            {% endif %}
                         </ul>
                     </div>
                 </nav>
@@ -62,12 +65,12 @@
                 <label for="my-drawer" class="drawer-overlay"></label>
                 <ul class="menu w-80 bg-base-100 p-4 text-base-content">
                     <!-- Sidebar content here -->
-                    <li><a href="/ranking">Classements</a></li>
-                    <li><a href="/grade">Classes</a></li>
-                    <li><a href="/race">Courses</a></li>
-                    <li><a href="/student">Etudiants</a></li>
-                    <li><a href="/export">Exporter</a></li>
-                    <li><a href="/import">Importer</a></li>
+                    <li><a href="/admin/ranking">Classements</a></li>
+                    <li><a href="/admin/grade">Classes</a></li>
+                    <li><a href="/admin/race">Courses</a></li>
+                    <li><a href="/admin/student">Etudiants</a></li>
+                    <li><a href="/admin/export">Exporter</a></li>
+                    <li><a href="/admin/import">Importer</a></li>
                 </ul>
             </div>
         </div>
