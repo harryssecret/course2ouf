@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\export;
 use App\Form\ExportType;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route("/export")]
+#[Route("/admin/export")]
 class ExportController extends AbstractController
 {
     #[Route("/", name: "app_export")]

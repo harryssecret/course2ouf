@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Race;
 use App\Form\RaceType;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("/race")]
+#[Route("/admin/race")]
 class RaceController extends AbstractController
 {
     #[Route("/", name: "app_race_index", methods: ["GET"])]

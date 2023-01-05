@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Import;
 use App\Entity\Student;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route("/import")]
+#[Route("/admin/import")]
 class ImportController extends AbstractController
 {
     #[Route("/", name: "app_import", methods: ["GET"])]

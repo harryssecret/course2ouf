@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Ranking;
 use App\Form\RankingType;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/ranking')]
+#[Route('/admin/ranking')]
 class RankingController extends AbstractController
 {
     #[Route('/', name: 'app_ranking_index', methods: ['GET'])]
@@ -34,7 +34,7 @@ class RankingController extends AbstractController
 
         return $this->render('ranking/index.html.twig', [
             'rankings' => $sortedRankings,
-            
+
         ]);
     }
 
@@ -86,7 +86,7 @@ class RankingController extends AbstractController
     #[Route('/{id}', name: 'app_ranking_delete', methods: ['POST'])]
     public function delete(Request $request, Ranking $ranking, RankingRepository $rankingRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$ranking->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $ranking->getId(), $request->request->get('_token'))) {
             $rankingRepository->remove($ranking, true);
         }
 

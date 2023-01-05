@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Student;
 use App\Form\StudentType;
@@ -13,7 +13,7 @@ use Dompdf\Options;
 use Symfony\Component\Routing\Annotation\Route;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
-#[Route("/student")]
+#[Route("/admin/student")]
 class StudentController extends AbstractController
 {
     #[Route("/", name: "app_student_index", methods: ["GET"])]

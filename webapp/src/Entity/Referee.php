@@ -61,7 +61,7 @@ class Referee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = "ROLE_USER";
+        array_merge($roles, ["ROLE_USER", "ROLE_ADMIN"]);
 
         return array_unique($roles);
     }
