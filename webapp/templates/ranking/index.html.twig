@@ -11,7 +11,8 @@ block body %}
     <a class="btn" href="rankBy=grade">Trier en fonction des classes</a>
 </div>
 <br />
-<table class="table">
+<a role="button" class="btn" href="{{ path('app_ranking_new') }}">Create new</a>
+<table class="table w-full">
     <thead>
         <tr>
             <th>Id</th>
@@ -46,5 +47,4 @@ block body %}
     </tbody>
 </table>
 
-<a class="btn" href="{{ path('app_ranking_new') }}">Create new</a>
 {% endblock %}

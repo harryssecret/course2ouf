@@ -2,7 +2,10 @@
 block body %}
 <h1 class="text-2xl">Grade index</h1>
 
-<table class="table">
+<a role="button" class="btn btn-primary" href="{{ path('app_grade_new') }}"
+    >Create new</a
+>
+<table class="table w-full">
     <thead>
         <tr>
             <th>Id</th>
@@ -32,5 +35,4 @@ block body %}
     </tbody>
 </table>
 
-<a class="btn-primary btn" href="{{ path('app_grade_new') }}">Create new</a>
 {% endblock %}
