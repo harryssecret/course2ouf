@@ -56,7 +56,7 @@ const HistoryTagRoute = (): JSX.Element => {
   );
 };
 
-type ScannedBarcodeInfosProps = {
+export type ScannedBarcodeInfosProps = {
   id: number;
   userBarcodeId: string | undefined;
   arrivalTime: number;

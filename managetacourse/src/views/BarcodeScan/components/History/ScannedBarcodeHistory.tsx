@@ -1,28 +1,27 @@
 import { List } from "react-native-paper";
 import React, { useState } from "react";
-
-type ScannedTagInfosProps = {
-  userBarcodeId: string | undefined;
-  arrivalTime: number;
-};
+import { ScannedBarcodeInfosProps } from "../..";
 
 /*
  * @todo add a route to the details of the runner
  */
-const ScannedTagInfoListElement = ({
+const ScannedBarcodeInfoListElement = ({
+  id,
   userBarcodeId: barcodeId,
   arrivalTime,
-}: ScannedTagInfosProps) => {
+}: ScannedBarcodeInfosProps) => {
   const localTime = new Date(arrivalTime);
+  const shortBarcodeId = barcodeId?.slice(0, 20);
   return (
     <List.Item
-      title={`${barcodeId}, temps : ${localTime.getMinutes()}m${localTime.getSeconds()}s`}
+      key={id}
+      title={`${shortBarcodeId}, temps : ${localTime.getMinutes()}m${localTime.getSeconds()}s`}
     />
   );
 };
 
 type ScannedTagListProps = {
-  tagList: Array<ScannedTagInfosProps>;
+  tagList: Array<ScannedBarcodeInfosProps>;
 };
 
 /*
@@ -41,7 +40,7 @@ export const ScannedBarcodeList = ({ tagList }: ScannedTagListProps) => {
         onPress={handlePress}
       >
         {tagList.map((props) => (
-          <ScannedTagInfoListElement {...props} />
+          <ScannedBarcodeInfoListElement {...props} />
         ))}
       </List.Accordion>
     </List.Section>
