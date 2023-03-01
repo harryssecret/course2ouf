@@ -1,5 +1,4 @@
 <?php
-// tests/AuthenticationTest.php
 
 namespace App\Tests;
 
@@ -26,7 +25,6 @@ class AuthenticationTest extends ApiTestCase
         $manager->persist($user);
         $manager->flush();
 
-        // retrieve a token
         $response = $client->request('POST', '/api/auth', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
@@ -43,7 +41,6 @@ class AuthenticationTest extends ApiTestCase
         $client->request('GET', '/api');
         $this->assertResponseStatusCodeSame(401);
 
-        // test authorized
         $client->request('GET', '/api', ['auth_bearer' => $json['token']]);
         $this->assertResponseIsSuccessful();
     }

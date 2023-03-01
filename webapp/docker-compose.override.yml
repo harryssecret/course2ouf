@@ -19,11 +19,13 @@ services:
       - host.docker.internal:host-gateway
 
   caddy:
+    command: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile", "--watch"]
     volumes:
       - ./public:/srv/app/public:ro
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
 
   ###> symfony/mercure-bundle ###
+  
   ###< symfony/mercure-bundle ###
 
   ###> doctrine/doctrine-bundle ###
