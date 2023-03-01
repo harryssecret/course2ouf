@@ -3,8 +3,4 @@ api_platform:
     type: api_platform
     prefix: /api
 
-    swagger:
-        api_keys:
-        JWT:
-            name: Authorization
-            type: header
+

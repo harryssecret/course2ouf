@@ -7,5 +7,5 @@ app_logout:
     methods: GET
 
 api_auth:
-    path: /auth
+    path: /api/auth
     methods: ["POST"]
