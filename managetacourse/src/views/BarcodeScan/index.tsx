@@ -27,15 +27,7 @@ const BottomTagNavigator = (): JSX.Element => (
         ),
       }}
     />
-    <Tab.Screen
-      name="Ecrire"
-      component={WriteTagRoute}
-      options={{
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="pencil" color={color} size={26} />
-        ),
-      }}
-    />
+
     <Tab.Screen
       name="Historique"
       component={HistoryTagRoute}
@@ -200,12 +192,12 @@ const ScanBarcodeRoute = (): JSX.Element => {
       )}
       <View style={styles.buttonContainer}>
         <Button icon="camera" onPress={showModal} mode="contained">
-          Lecteur de code barre
+          Ouvrir le lecteur
         </Button>
         <Button icon="clock-outline" onPress={startTimer} mode="contained">
           Démarrer le timer
         </Button>
-        <Button onPress={resetTime}>Timer à zéro</Button>
+        <Button onPress={resetTime}>Remettre à zéro</Button>
       </View>
       <ScannedBarcodeList tagList={scannedBarcode} />
     </ScrollView>
@@ -214,6 +206,8 @@ const ScanBarcodeRoute = (): JSX.Element => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flex: 1,
+    gap: 4,
     paddingTop: 24,
     alignItems: "center",
   },
@@ -233,4 +227,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const WriteTagRoute = () => <View></View>;

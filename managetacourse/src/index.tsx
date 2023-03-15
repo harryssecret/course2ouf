@@ -18,6 +18,7 @@ const theme = {
 
 export type RootStackParamList = {
   Accueil: undefined;
+  Students: undefined;
   Barcodes: undefined;
 };
 

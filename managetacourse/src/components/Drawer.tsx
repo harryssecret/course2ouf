@@ -14,6 +14,7 @@ import { RootStackParamList } from "..";
 import { getHeaderTitle } from "@react-navigation/elements";
 import Home from "../HomeView";
 import BarcodeView from "../views/BarcodeScan";
+import StudentsHome from "../views/Students";
 
 const Drawer = createDrawerNavigator();
 
@@ -40,6 +41,7 @@ const DrawerContent = (props: DrawerContentComponentProps) => {
           active={active === "Tags"}
           icon="barcode"
         />
+        <PaperDrawer.Item label="Etudiants" onPress={() => props.navigation.navigate("Etudiants") } active={active === "Etudiants"} />
       </PaperDrawer.Section>
     </DrawerContentScrollView>
   );
@@ -54,6 +56,7 @@ export const RootNavigator = () => {
     >
       <Drawer.Screen name="Accueil" component={Home} />
       <Drawer.Screen name="Tags" component={BarcodeView} />
+      <Drawer.Screen name="Etudiants" component={StudentsHome}/>
     </Drawer.Navigator>
   );
 };
