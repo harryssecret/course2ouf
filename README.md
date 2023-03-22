@@ -27,9 +27,20 @@ docker compose build --no-cache --pull
 docker compose up -d
 ```
 
+
 ### Installation manuelle
 
 Cette section est en cours de création. Merci de revenir plus tard!
+
+Il faudra aussi vous renseigner sur les variables d'environment afin de faire fonctionner cette application. Vous pourrez générer la clé JWT en effectuant `php bin/console lexik:jwt:generate-keypair`
+
+Si vous utilisez Windows, il peut être nécessaire d'avoir à installer OpenSSL. Je vous conseille d'installer Scoop, et OpenSSL ensuite.
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser # Optional: Needed to run a remote script the first time
+irm get.scoop.sh | iex
+scoop install openssl
+```
 
 ## Licence
 
