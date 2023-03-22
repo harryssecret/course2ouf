@@ -11,7 +11,6 @@ class ApiAuthTest extends ApiTestCase
 {
     use RefreshDatabaseTrait;
 
-
     private $entityManager;
     public function testAuth(UserPasswordHasherInterface $us): void
     {
@@ -28,6 +27,9 @@ class ApiAuthTest extends ApiTestCase
         $entityManager->persist($referee);
         $entityManager->flush($referee);
 
+        $client->loginUser($referee);
+
         $response = $client->request('POST', '/api/auth');
+        $this->assertResponseIsSuccessful();
     }
 }
