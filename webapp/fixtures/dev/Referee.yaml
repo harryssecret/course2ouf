@@ -1,0 +1,4 @@
+App\Entity\Referee:
+  referee: 
+    username: <userName()>
+    

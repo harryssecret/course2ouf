@@ -1,0 +1,7 @@
+App\Entity\Student:
+  student_{1..20}:
+    firstname: <firstName()>
+    lastname: <lastName()>
+    gender: <randomElement(["Homme", "Femme"])>
+    grade: '@grade_*'
+    
