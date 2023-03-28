@@ -1,78 +1,112 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}{% endblock %} - course2ouf</title>
-        <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"
-        />
-        {# Run `composer require symfony/webpack-encore-bundle` to start using
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}{% endblock %} - course2ouf</title>
+    <link
+        rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"
+    />
+    {# Run `composer require symfony/webpack-encore-bundle` to start using
         Symfony UX #} {% block stylesheets %}
-        {{
-            encore_entry_link_tags("app")
-        }}
-        {% endblock %}
-    </head>
-    <body>
-        <div class="drawer">
-            <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-            <div class="drawer-content">
-                <nav class="navbar bg-base-100">
-                    <div class="flex-none">
-                        <button
-                            id="drawer-toggle"
-                            class="btn-ghost drawer-button btn-square btn"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                class="inline-block h-5 w-5 stroke-current"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                ></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="flex-1">
-                        <a class="btn-ghost btn text-xl normal-case" href="/"
-                            >course2ouf</a
-                        >
-                    </div>
-                    <div class="flex-none">
-                        <ul class="menu menu-horizontal p-0">
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <p>connecté</p>
-                            {% endif %}
-
-                            <li>
-                                <a href="/login">Se connecter</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <div>{% block body %}{% endblock %}</div>
+        {{ encore_entry_link_tags("app") }}
+    {% endblock %}
+</head>
+<body>
+<div class="drawer">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle"/>
+    <div class="drawer-content">
+        <nav class="navbar bg-base-100">
+            <div class="flex-none">
+                <button
+                    id="drawer-toggle"
+                    class="btn-ghost drawer-button btn-square btn"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        class="inline-block h-5 w-5 stroke-current"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"
+                        ></path>
+                    </svg>
+                </button>
             </div>
-            <div class="drawer-side">
-                <label for="my-drawer" class="drawer-overlay"></label>
-                <ul class="menu w-80 bg-base-100 p-4 text-base-content">
-                    <!-- Sidebar content here -->
-                    <li><a href="/ranking">Classements</a></li>
-                    <li><a href="/grade">Classes</a></li>
-                    <li><a href="/race">Courses</a></li>
-                    <li><a href="/student">Etudiants</a></li>
-                    <li><a href="/export">Exporter</a></li>
-                    <li><a href="/import">Importer</a></li>
+            <div class="flex-1">
+                <a class="btn-ghost btn text-xl normal-case" href="/"
+                >course2ouf</a
+                >
+            </div>
+            <div class="flex-none">
+                <ul class="menu menu-horizontal p-0">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <p>connecté</p>
+                    {% else %}
+                        <li>
+                            <a href="/login">Se connecter</a>
+                        </li>
+                    {% endif %}
+
+
                 </ul>
             </div>
-        </div>
-        {% block javascripts %}
-        {{ encore_entry_script_tags("app") }}
-        {% endblock %}
-    </body>
+        </nav>
+        <div class="px-4">{% block body %}{% endblock %}</div>
+    </div>
+    <div class="drawer-side">
+        <label for="my-drawer" class="drawer-overlay"></label>
+        <ul class="menu w-80 bg-base-100 p-4 text-base-content">
+            <!-- Sidebar content here -->
+            <li>
+                <div>
+                    <iconify-icon icon="ph:medal" width="32" height="32"></iconify-icon>
+                    <a href="/admin/ranking">Classements</a>
+                </div>
+            </li>
+            <li>
+                <div>
+
+                    <iconify-icon icon="icon-park-outline:school" width="32" height="32"></iconify-icon>
+                    <a href="/admin/grade">Classes</a>
+                </div>
+            </li>
+            <li>
+                <div>
+
+                    <iconify-icon icon="material-symbols:run-circle" width="32" height="32"></iconify-icon>
+                    <a href="/admin/race">Courses</a>
+                </div>
+            </li>
+            <li>
+                <div>
+
+                    <iconify-icon icon="mdi:account-student-outline" width="32" height="32"></iconify-icon>
+                    <a href="/admin/student">Etudiants</a>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <iconify-icon icon="foundation:page-export-csv" width="32" height="32"></iconify-icon>
+                    <a href="/admin/export">Exporter</a>
+                </div>
+            </li>
+            <li>
+                <div>
+
+                    <iconify-icon icon="mdi:database-import-outline" width="32" height="32"></iconify-icon>
+                    <a href="/admin/import">Importer</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+{% block javascripts %}
+    {{ encore_entry_script_tags("app") }}
+{% endblock %}
+</body>
 </html>
