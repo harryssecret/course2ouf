@@ -1,3 +1,4 @@
 App\Entity\Ranking:
-  endrun: <dateTime()>
-  student: '@student*'
+    ranking_{1..50}:
+      endrun: <dateTime()>
+      student: '@student*'
