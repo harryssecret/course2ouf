@@ -5,6 +5,9 @@
   "build": {
     "development": {
       "distribution": "internal",
+      "env": {
+        "API_URL": "http://localhost:8000/api"
+      },
       "android": {
         "gradleCommand": ":app:assembleDebug"
       },

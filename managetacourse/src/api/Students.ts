@@ -1,3 +1,10 @@
-const API_ENDPOINT = process.env.COURSE2OUF_API_ENDPOINT
+import {API_URL} from "@env";
 
-export const getStudents = () => { }
+export const getStudent = async (id: number) => {
+    const res = await fetch(`${API_URL}/students/${id}`)
+    return res.json();
+}
+
+export const getStudents = () => {
+    // todo
+}
