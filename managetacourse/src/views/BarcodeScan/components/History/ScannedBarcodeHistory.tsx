@@ -1,5 +1,5 @@
-import { List } from "react-native-paper";
-import React, { useState } from "react";
+import {List} from "react-native-paper";
+import React, {useState} from "react";
 
 type ScannedTagInfosProps = {
   userBarcodeId: string | undefined;

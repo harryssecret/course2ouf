@@ -1,6 +1,6 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Text, useTheme, withTheme } from "react-native-paper";
+import {View} from "react-native";
+import {Text, withTheme} from "react-native-paper";
 
 function Home(): JSX.Element {
   return (

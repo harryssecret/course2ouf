@@ -1,7 +1,4 @@
-import {
-
-    Provider as PaperProvider,
-} from "react-native-paper";
+import {Provider as PaperProvider,} from "react-native-paper";
 import {NavigationContainer} from "@react-navigation/native";
 import React from "react";
 import {StatusBar} from "expo-status-bar";

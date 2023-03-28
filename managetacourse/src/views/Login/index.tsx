@@ -1,7 +1,6 @@
 import {View} from "react-native";
 import {Button, TextInput} from "react-native-paper";
-import {useState} from "react";
-import React from "react";
+import React, {useState} from "react";
 import {API_URL} from "@env";
 
 export default function LoginView() {

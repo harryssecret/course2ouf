@@ -1,17 +1,10 @@
-import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
-import { Drawer as PaperDrawer, Appbar } from "react-native-paper";
-import {
-  createDrawerNavigator,
-  DrawerContentComponentProps,
-  DrawerContentScrollView,
-} from "@react-navigation/drawer";
-import {
-  createStackNavigator,
-  StackHeaderProps,
-} from "@react-navigation/stack";
-import { RootStackParamList } from "..";
-import { getHeaderTitle } from "@react-navigation/elements";
+import React, {useState} from "react";
+import {TouchableOpacity} from "react-native";
+import {Appbar, Drawer as PaperDrawer} from "react-native-paper";
+import {createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView,} from "@react-navigation/drawer";
+import {createStackNavigator, StackHeaderProps,} from "@react-navigation/stack";
+import {RootStackParamList} from "..";
+import {getHeaderTitle} from "@react-navigation/elements";
 import Home from "../HomeView";
 import BarcodeView from "../views/BarcodeScan";
 import StudentsHome from "../views/Students";

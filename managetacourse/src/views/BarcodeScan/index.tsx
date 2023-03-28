@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ToastAndroid, ScrollView } from "react-native";
-import { Button, Portal, Text, withTheme } from "react-native-paper";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import React, {useEffect, useState} from "react";
+import {ScrollView, StyleSheet, ToastAndroid, View} from "react-native";
+import {Button, Portal, Text, withTheme} from "react-native-paper";
+import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { BarCodeScanner, BarCodeScannerResult } from "expo-barcode-scanner";
+import {BarCodeScanner, BarCodeScannerResult} from "expo-barcode-scanner";
 
-import { ScannedBarcodeList } from "./components/History/ScannedBarcodeHistory";
+import {ScannedBarcodeList} from "./components/History/ScannedBarcodeHistory";
 
 function TagView(): JSX.Element {
   return <BottomTagNavigator />;
