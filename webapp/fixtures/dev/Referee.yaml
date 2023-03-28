@@ -1,6 +1,6 @@
 App\Entity\Referee:
   referee: 
-    username: <userName()>
+    username: 'admin'
     password: <hashPassword('admin')>
-    roles: <["ROLE_USER", "ROLE_ADMIN"]>
+    roles: ["ROLE_USER", "ROLE_ADMIN"]
     

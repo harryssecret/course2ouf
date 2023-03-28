@@ -10,12 +10,13 @@ import "./styles/app.css";
 
 // start the Stimulus application
 import "./bootstrap";
+import 'iconify-icon';
 
 const toggleButton = document.getElementById("drawer-toggle");
 const hiddenDrawerCheckbox = document.getElementById("my-drawer");
 let checkboxChecked = hiddenDrawerCheckbox.getAttribute("checked");
 
-toggleButton.addEventListener("click", function (e) {
+toggleButton.addEventListener("click", function () {
   if (checkboxChecked) {
     hiddenDrawerCheckbox.checked = true;
   } else {
