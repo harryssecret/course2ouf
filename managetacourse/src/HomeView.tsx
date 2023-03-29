@@ -1,11 +1,14 @@
 import React from "react";
 import {View} from "react-native";
-import {Text, withTheme} from "react-native-paper";
+import { Button, Text, withTheme } from "react-native-paper";
 
 function Home(): JSX.Element {
   return (
     <View>
-      <Text>Bienvenue sur l'accueil!</Text>
+      <Button mode={"contained"}>
+        Scan now
+      </Button>
+
     </View>
   );
 }

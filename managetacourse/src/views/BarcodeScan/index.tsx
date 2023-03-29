@@ -17,9 +17,9 @@ export default withTheme(TagView);
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTagNavigator = (): JSX.Element => (
-  <Tab.Navigator initialRouteName="Lire">
+  <Tab.Navigator initialRouteName="Scan">
     <Tab.Screen
-      name="Lire"
+      name="Scan"
       component={ScanBarcodeRoute}
       options={{
         tabBarIcon: ({ color }) => (
@@ -29,7 +29,7 @@ const BottomTagNavigator = (): JSX.Element => (
     />
 
     <Tab.Screen
-      name="Historique"
+      name="History"
       component={HistoryTagRoute}
       options={{
         tabBarIcon: ({ color }) => (
@@ -43,7 +43,7 @@ const BottomTagNavigator = (): JSX.Element => (
 const HistoryTagRoute = (): JSX.Element => {
   return (
     <View>
-      <Text>Lister les tags</Text>
+      <Text>List tags</Text>
     </View>
   );
 };
@@ -74,7 +74,7 @@ const Timer = ({ startRunningTime }: { startRunningTime: Date }) => {
 
   return (
     <View>
-      <Text>Temps écoulé :</Text>
+      <Text>Passed time since start :</Text>
       <Text>
         {minutes}:{seconds}:{milliseconds}
       </Text>
@@ -134,15 +134,15 @@ const ScanBarcodeRoute = (): JSX.Element => {
       };
       setScannedBarcode((barcodes) => [...barcodes, newScannedBarcode]);
     } else {
-      ToastAndroid.show("Format de code barre inconnu.", ToastAndroid.SHORT);
+      ToastAndroid.show("Unknown barcode type.", ToastAndroid.SHORT);
     }
     setIsScanned(true);
   };
 
   if (hasPermission == null) {
-    return <Text>Demande de permission...</Text>;
+    return <Text>Asking for permission...</Text>;
   } else if (hasPermission == false) {
-    return <Text>Impossible d'accéder à la caméra.</Text>;
+    return <Text>Impossible to get camera permissions.</Text>;
   }
 
   return (
@@ -183,7 +183,7 @@ const ScanBarcodeRoute = (): JSX.Element => {
               backgroundColor: "rgba(0,0,0,0.5)",
             }}
           >
-            <Text style={{ color: "white" }}>Code barre scanné</Text>
+            <Text style={{ color: "white" }}>Scanned barcode!</Text>
             <Button mode="contained" onPress={() => setIsScanned(false)}>
               OK
             </Button>
@@ -192,12 +192,12 @@ const ScanBarcodeRoute = (): JSX.Element => {
       )}
       <View style={styles.buttonContainer}>
         <Button icon="camera" onPress={showModal} mode="contained">
-          Ouvrir le lecteur
+          Open barcode reader
         </Button>
         <Button icon="clock-outline" onPress={startTimer} mode="contained">
-          Démarrer le timer
+          Start timer
         </Button>
-        <Button onPress={resetTime}>Remettre à zéro</Button>
+        <Button onPress={resetTime}>Reset timer</Button>
       </View>
       <ScannedBarcodeList tagList={scannedBarcode} />
     </ScrollView>
