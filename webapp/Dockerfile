@@ -1,131 +1,93 @@
-#syntax=docker/dockerfile:1.4
+# syntax = docker/dockerfile:experimental
 
-# The different stages of this Dockerfile are meant to be built into separate images
-# https://docs.docker.com/develop/develop-images/multistage-build/#stop-at-a-specific-build-stage
-# https://docs.docker.com/compose/compose-file/#target
+# Default to PHP 8.2, but we attempt to match
+# the PHP version from the user (wherever `flyctl launch` is run)
+# Valid version values are PHP 7.4+
+ARG PHP_VERSION=8.2
+ARG NODE_VERSION=14
+FROM fideloper/fly-laravel:${PHP_VERSION} as base
 
-# Prod image
-FROM php:8.1-fpm-alpine AS app_php
+# PHP_VERSION needs to be repeated here
+# See https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
+ARG PHP_VERSION
 
-# Allow to use development versions of Symfony
-ARG STABILITY="stable"
-ENV STABILITY ${STABILITY}
+LABEL fly_launch_runtime="laravel"
 
-# Allow to select Symfony version
-ARG SYMFONY_VERSION=""
-ENV SYMFONY_VERSION ${SYMFONY_VERSION}
+# copy application code, skipping files based on .dockerignore
+COPY . /var/www/html
 
-ENV APP_ENV=prod
+RUN composer install --optimize-autoloader --no-dev \
+    && mkdir -p storage/logs \
+    && php artisan optimize:clear \
+    && chown -R www-data:www-data /var/www/html \
+    && sed -i 's/protected \$proxies/protected \$proxies = "*"/g' app/Http/Middleware/TrustProxies.php \
+    && echo "MAILTO=\"\"\n* * * * * www-data /usr/bin/php /var/www/html/artisan schedule:run" > /etc/cron.d/laravel \
+    && cp .fly/entrypoint.sh /entrypoint \
+    && chmod +x /entrypoint
 
-WORKDIR /srv/app
-
-# php extensions installer: https://github.com/mlocati/docker-php-extension-installer
-COPY --from=mlocati/php-extension-installer --link /usr/bin/install-php-extensions /usr/local/bin/
-
-# persistent / runtime deps
-RUN apk add --no-cache \
-		acl \
-		fcgi \
-		file \
-		gettext \
-		git \
-		openssl \
-	;
-
-RUN set -eux; \
-    install-php-extensions \
-    	intl \
-    	zip \
-    	apcu \
-		opcache \
-		imagick \
-    ;
-
-###> recipes ###
-###> doctrine/doctrine-bundle ###
-RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
-	docker-php-ext-install -j$(nproc) pdo_pgsql; \
-	apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
-	apk del .pgsql-deps
-###< doctrine/doctrine-bundle ###
-###< recipes ###
-
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY --link docker/php/conf.d/app.ini $PHP_INI_DIR/conf.d/
-COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
-
-COPY --link docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-RUN mkdir -p /var/run/php
-
-COPY --link docker/php/docker-healthcheck.sh /usr/local/bin/docker-healthcheck
-RUN chmod +x /usr/local/bin/docker-healthcheck
-
-HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
-
-COPY --link docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["php-fpm"]
-
-# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
-ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV PATH="${PATH}:/root/.composer/vendor/bin"
-
-COPY --from=composer/composer:2-bin --link /composer /usr/bin/composer
-
-# prevent the reinstallation of vendors at every changes in the source code
-COPY composer.* symfony.* ./
-RUN set -eux; \
-    if [ -f composer.json ]; then \
-		composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress; \
-		composer clear-cache; \
+# If we're using Octane...
+RUN if grep -Fq "laravel/octane" /var/www/html/composer.json; then \
+        rm -rf /etc/supervisor/conf.d/fpm.conf; \
+        if grep -Fq "spiral/roadrunner" /var/www/html/composer.json; then \
+            mv /etc/supervisor/octane-rr.conf /etc/supervisor/conf.d/octane-rr.conf; \
+            if [ -f ./vendor/bin/rr ]; then ./vendor/bin/rr get-binary; fi; \
+            rm -f .rr.yaml; \
+        else \
+            mv .fly/octane-swoole /etc/services.d/octane; \
+            mv /etc/supervisor/octane-swoole.conf /etc/supervisor/conf.d/octane-swoole.conf; \
+        fi; \
+        rm /etc/nginx/sites-enabled/default; \
+        ln -sf /etc/nginx/sites-available/default-octane /etc/nginx/sites-enabled/default; \
     fi
 
-# copy sources
-COPY --link  . .
-RUN rm -Rf docker/
+# Multi-stage build: Build static assets
+# This allows us to not include Node within the final container
+FROM node:${NODE_VERSION} as node_modules_go_brrr
 
-RUN set -eux; \
-	mkdir -p var/cache var/log; \
-    if [ -f composer.json ]; then \
-		composer dump-autoload --classmap-authoritative --no-dev; \
-		composer dump-env prod; \
-		composer run-script --no-dev post-install-cmd; \
-		chmod +x bin/console; sync; \
-    fi
+RUN mkdir /app
 
-# Dev image
-FROM app_php AS app_php_dev
+RUN mkdir -p  /app
+WORKDIR /app
+COPY . .
+COPY --from=base /var/www/html/vendor /app/vendor
 
-ENV APP_ENV=dev XDEBUG_MODE=off
-VOLUME /srv/app/var/
+# Use yarn or npm depending on what type of
+# lock file we might find. Defaults to
+# NPM if no lock file is found.
+# Note: We run "production" for Mix and "build" for Vite
+RUN if [ -f "vite.config.js" ]; then \
+        ASSET_CMD="build"; \
+    else \
+        ASSET_CMD="production"; \
+    fi; \
+    if [ -f "yarn.lock" ]; then \
+        yarn install --frozen-lockfile; \
+        yarn $ASSET_CMD; \
+    elif [ -f "pnpm-lock.yaml" ]; then \
+        corepack enable && corepack prepare pnpm@latest-7 --activate; \
+        pnpm install --frozen-lockfile; \
+        pnpm run $ASSET_CMD; \
+    elif [ -f "package-lock.json" ]; then \
+        npm ci --no-audit; \
+        npm run $ASSET_CMD; \
+    else \
+        npm install; \
+        npm run $ASSET_CMD; \
+    fi;
 
-RUN rm $PHP_INI_DIR/conf.d/app.prod.ini; \
-	mv "$PHP_INI_DIR/php.ini" "$PHP_INI_DIR/php.ini-production"; \
-	mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+# From our base container created above, we
+# create our final image, adding in static
+# assets that we generated above
+FROM base
 
-COPY --link docker/php/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
+# Packages like Laravel Nova may have added assets to the public directory
+# or maybe some custom assets were added manually! Either way, we merge
+# in the assets we generated above rather than overwrite them
+COPY --from=node_modules_go_brrr /app/public /var/www/html/public-npm
+RUN rsync -ar /var/www/html/public-npm/ /var/www/html/public/ \
+    && rm -rf /var/www/html/public-npm \
+    && chown -R www-data:www-data /var/www/html/public
 
-RUN set -eux; \
-	install-php-extensions xdebug
+EXPOSE 8080
 
-RUN rm -f .env.local.php
-
-# Build Caddy with the Mercure and Vulcain modules
-FROM caddy:2.6-builder-alpine AS app_caddy_builder
-
-RUN xcaddy build \
-	--with github.com/dunglas/mercure \
-	--with github.com/dunglas/mercure/caddy \
-	--with github.com/dunglas/vulcain \
-	--with github.com/dunglas/vulcain/caddy
-
-# Caddy image
-FROM caddy:2.6-alpine AS app_caddy
-
-WORKDIR /srv/app
-
-COPY --from=app_caddy_builder --link /usr/bin/caddy /usr/bin/caddy
-COPY --from=app_php --link /srv/app/public public/
-COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
+ENTRYPOINT ["/entrypoint"]
