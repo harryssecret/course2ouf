@@ -1,40 +1,50 @@
-import {View} from "react-native";
-import { ActivityIndicator, Button, TextInput } from "react-native-paper";
-import React, { useState } from "react";
-import {API_URL} from "@env";
+import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button, TextInput, withTheme } from "react-native-paper";
+import {TextInput as ReactTextInput} from 'react-native';
+import React, { useRef, useState } from "react";
+import { logUserIn } from "../../api/Auth";
+import { API_URL } from "@env";
 
-import * as SecureStore from 'expo-secure-store'
-
-async function saveToken(token: string) {
-  await SecureStore.setItemAsync("token", token)
-}
-
-export async function getSavedToken() {
-  return await SecureStore.getItemAsync("token");
-}
-
-export default function LoginView() {
+function LoginView() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const passwordRef = useRef<ReactTextInput>(null)
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-    const logUserIn = async () => {
-        const res = await fetch(`${API_URL}/auth`, {
-            method: "POST",
-            headers: {"Accept": "application/json", "Content-Type": "application/json"},
-            body: JSON.stringify({username: username, password: password})
-        })
-      if (res.status === 200) {
-        const body = await res.json()
-        await saveToken(body.token)
+    const focusOnNextTextInput = () => {
+      if (passwordRef.current) {
+        passwordRef.current.focus()
       }
     }
 
+    const handleSubmit = async () => {
+      try {
+        await logUserIn(username, password)
+      } catch (e) {
+        console.error("Error logging in", e)
+      }
+    }
+
+    const handlePasswordEye = async () => {
+      setIsPasswordVisible(!isPasswordVisible)
+      console.log(API_URL)
+    }
+
     return (
-        <View>
-            <TextInput label={"Nom d'utilisateur"} value={username} onChangeText={text => setUsername(text)}/>
-            <TextInput mode={"outlined"} right={<TextInput.Affix text={"/100"}/>} label={"Mot de passe"}
-                       value={password} onChangeText={text => setPassword(text)}/>
-            <Button onPress={() => logUserIn()} mode={"contained"}>Se connecter</Button>
+        <View style={styles.container}>
+            <TextInput mode={"outlined"} label={"Username"} value={username} onChangeText={text => setUsername(text)} autoCorrect={false} onSubmitEditing={() => focusOnNextTextInput()} autoFocus/>
+            <TextInput mode={"outlined"} right={<TextInput.Icon icon={"eye"} onPress={handlePasswordEye}/>} label={"Password"}
+                       value={password} onChangeText={text => setPassword(text)} secureTextEntry={isPasswordVisible} autoCorrect={false} ref={passwordRef}/>
+            <Button onPress={handleSubmit} mode={"contained"}>Login</Button>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 8,
+    paddingVertical: 12
+  }
+})
+
+export default withTheme(LoginView);

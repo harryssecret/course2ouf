@@ -2,11 +2,11 @@
   "name": "managetacourse",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "NODE_ENV=test expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "dependencies": {
     "@expo/config-plugins": "^5.0.4",
@@ -42,7 +42,6 @@
     "@types/jest": "^29.5.0",
     "@types/react": "~18.0.30",
     "@types/react-native": "~0.71.5",
-    "@types/react-native-dotenv": "^0.2.0",
     "@types/react-native-vector-icons": "^6.4.13",
     "@types/react-test-renderer": "^18.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",

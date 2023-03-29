@@ -9,6 +9,7 @@ export type RootStackParamList = {
     Accueil: undefined;
     Students: undefined;
     Barcodes: undefined;
+    Login: undefined;
 };
 
 export default function Main() {
