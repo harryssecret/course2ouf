@@ -1,12 +1,16 @@
 import {View} from "react-native";
-import {Button, TextInput} from "react-native-paper";
-import React, {useState} from "react";
+import { ActivityIndicator, Button, TextInput } from "react-native-paper";
+import React, { useState } from "react";
 import {API_URL} from "@env";
 
 import * as SecureStore from 'expo-secure-store'
 
 async function saveToken(token: string) {
   await SecureStore.setItemAsync("token", token)
+}
+
+export async function getSavedToken() {
+  return await SecureStore.getItemAsync("token");
 }
 
 export default function LoginView() {
