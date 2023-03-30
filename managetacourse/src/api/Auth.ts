@@ -9,7 +9,7 @@ export async function getSavedToken() {
   return await SecureStore.getItemAsync("token");
 }
 
-async function fetchWithAuth(url: string, options: RequestInit = {}) {
+export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const token = await getSavedToken();
   if (!token) {
     throw new Error("Could not get saved token");
