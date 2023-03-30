@@ -5,40 +5,31 @@
 # Valid version values are PHP 7.4+
 ARG PHP_VERSION=8.2
 ARG NODE_VERSION=14
-FROM fideloper/fly-laravel:${PHP_VERSION} as base
+FROM serversideup/php:${PHP_VERSION}-fpm-nginx as base
 
 # PHP_VERSION needs to be repeated here
 # See https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG PHP_VERSION
 
-LABEL fly_launch_runtime="laravel"
+LABEL fly_launch_runtime="symfony"
+
+RUN apt-get update && apt-get install -y \
+    php${PHP_VERSION}-pgsql php${PHP_VERSION}-bcmath \
+    php${PHP_VERSION}-xml php${PHP_VERSION}-mbstring \
+    rsync \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # copy application code, skipping files based on .dockerignore
 COPY . /var/www/html
 
-RUN composer install --optimize-autoloader --no-dev \
-    && mkdir -p storage/logs \
-    && php artisan optimize:clear \
+RUN composer install --optimize-autoloader --no-scripts --no-dev \
     && chown -R www-data:www-data /var/www/html \
-    && sed -i 's/protected \$proxies/protected \$proxies = "*"/g' app/Http/Middleware/TrustProxies.php \
-    && echo "MAILTO=\"\"\n* * * * * www-data /usr/bin/php /var/www/html/artisan schedule:run" > /etc/cron.d/laravel \
+    && rm -rf /etc/cont-init.d/* \
+  	&& cp .fly/nginx-default /etc/nginx/sites-available/default \
+    && cp .fly/FlySymfonyRuntime.php /var/www/html/src/FlySymfonyRuntime.php \
     && cp .fly/entrypoint.sh /entrypoint \
     && chmod +x /entrypoint
-
-# If we're using Octane...
-RUN if grep -Fq "laravel/octane" /var/www/html/composer.json; then \
-        rm -rf /etc/supervisor/conf.d/fpm.conf; \
-        if grep -Fq "spiral/roadrunner" /var/www/html/composer.json; then \
-            mv /etc/supervisor/octane-rr.conf /etc/supervisor/conf.d/octane-rr.conf; \
-            if [ -f ./vendor/bin/rr ]; then ./vendor/bin/rr get-binary; fi; \
-            rm -f .rr.yaml; \
-        else \
-            mv .fly/octane-swoole /etc/services.d/octane; \
-            mv /etc/supervisor/octane-swoole.conf /etc/supervisor/conf.d/octane-swoole.conf; \
-        fi; \
-        rm /etc/nginx/sites-enabled/default; \
-        ln -sf /etc/nginx/sites-available/default-octane /etc/nginx/sites-enabled/default; \
-    fi
 
 # Multi-stage build: Build static assets
 # This allows us to not include Node within the final container
@@ -61,6 +52,7 @@ RUN if [ -f "vite.config.js" ]; then \
         ASSET_CMD="production"; \
     fi; \
     if [ -f "yarn.lock" ]; then \
+    	ASSET_CMD="build"; \
         yarn install --frozen-lockfile; \
         yarn $ASSET_CMD; \
     elif [ -f "pnpm-lock.yaml" ]; then \
