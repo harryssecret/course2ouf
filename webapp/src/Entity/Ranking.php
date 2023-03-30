@@ -8,6 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ApiResource]
 #[ORM\Table(name: "tbl_ranking")]
@@ -19,15 +23,18 @@ class Ranking
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'H:i:s'])]
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $endrun = null;
 
     #[ORM\ManyToOne(inversedBy: "rankings")]
     private ?Race $Race = null;
 
+    #[Groups(['read', 'write'])]
     #[ORM\ManyToOne(inversedBy: "rankings")]
     private ?Student $Student = null;
 
+    #[Ignore()]
     #[ORM\ManyToMany(targetEntity: Grade::class, inversedBy: 'rankings')]
     private Collection $Grade;
 

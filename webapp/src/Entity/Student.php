@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StudentRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Ulid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource()]
 #[ORM\Table(name: "tbl_student")]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
@@ -18,11 +21,14 @@ class Student
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
 
+
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $gender = null;

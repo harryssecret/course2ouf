@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "amphp/http-client": "4.2.1",
         "api-platform/core": "^3.0",
-        "doctrine/annotations": "^1.0",
+        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
