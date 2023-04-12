@@ -34,9 +34,6 @@ class Ranking
     #[ORM\ManyToOne(inversedBy: "rankings")]
     private ?Student $Student = null;
 
-    #[Ignore()]
-    #[ORM\ManyToMany(targetEntity: Grade::class, inversedBy: 'rankings')]
-    private Collection $Grade;
 
     public function __construct()
     {
@@ -84,27 +81,4 @@ class Ranking
         return $this;
     }
 
-    /**
-     * @return Collection<int, Grade>
-     */
-    public function getGrade(): Collection
-    {
-        return $this->Grade;
-    }
-
-    public function addGrade(Grade $grade): self
-    {
-        if (!$this->Grade->contains($grade)) {
-            $this->Grade->add($grade);
-        }
-
-        return $this;
-    }
-
-    public function removeGrade(Grade $grade): self
-    {
-        $this->Grade->removeElement($grade);
-
-        return $this;
-    }
 }

@@ -63,44 +63,44 @@
         <ul class="menu w-80 bg-base-100 p-4 text-base-content">
             <!-- Sidebar content here -->
             <li>
-                <div>
+                <a href="{{ path('app_ranking_index') }}">
                     <iconify-icon icon="ph:medal" width="32" height="32"></iconify-icon>
-                    <a href="/admin/ranking">Classements</a>
-                </div>
+                    <span>Classements</span>
+                </a>
             </li>
             <li>
-                <div>
+                <a href="{{ path('app_grade_index') }}">
 
                     <iconify-icon icon="icon-park-outline:school" width="32" height="32"></iconify-icon>
-                    <a href="/admin/grade">Classes</a>
-                </div>
+                    <span>Classes</span>
+                </a>
             </li>
             <li>
-                <div>
+                <a href="{{ path('app_race_index') }}">
 
                     <iconify-icon icon="material-symbols:run-circle" width="32" height="32"></iconify-icon>
-                    <a href="/admin/race">Courses</a>
-                </div>
+                    <span>Courses</span>
+                </a>
             </li>
             <li>
-                <div>
+                <a href="{{ path('app_student_index') }}">
 
                     <iconify-icon icon="mdi:account-student-outline" width="32" height="32"></iconify-icon>
-                    <a href="/admin/student">Etudiants</a>
-                </div>
+                    <span>Etudiants</span>
+                </a>
             </li>
             <li>
-                <div>
+                <a href="{{ path('app_export') }}">
                     <iconify-icon icon="foundation:page-export-csv" width="32" height="32"></iconify-icon>
-                    <a href="/admin/export">Exporter</a>
-                </div>
+                    <span>Exporter</span>
+                </a>
             </li>
             <li>
-                <div>
+                <a href="{{ path('app_import') }}">
 
                     <iconify-icon icon="mdi:database-import-outline" width="32" height="32"></iconify-icon>
-                    <a href="/admin/import">Importer</a>
-                </div>
+                    <span>Importer</span>
+                </a>
             </li>
         </ul>
     </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Api;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Referee;
@@ -10,8 +10,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class ApiAuthTest extends ApiTestCase
 {
     use RefreshDatabaseTrait;
-
     private $entityManager;
+    private string $apiToken;
     public function testAuth(UserPasswordHasherInterface $us): void
     {
         $client = static::createClient();

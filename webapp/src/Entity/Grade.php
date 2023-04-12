@@ -20,7 +20,7 @@ class Grade
     private Collection $students;
 
     #[ORM\Column(length: 255)]
-    private ?string $gradename = null;
+    private ?string $gradeName = null;
 
     #[ORM\ManyToMany(targetEntity: Ranking::class, mappedBy: 'Grade')]
     private Collection $rankings;
@@ -68,19 +68,19 @@ class Grade
 
     public function getgradename(): ?string
     {
-        return $this->gradename;
+        return $this->gradeName;
     }
 
-    public function setgradename(string $gradename): self
+    public function setgradename(string $gradeName): self
     {
-        $this->gradename = $gradename;
+        $this->gradeName = $gradeName;
 
         return $this;
     }
 
     public function __toString()
     {
-        return $this->gradename;
+        return $this->gradeName;
     }
 
     /**
@@ -95,7 +95,6 @@ class Grade
     {
         if (!$this->rankings->contains($ranking)) {
             $this->rankings->add($ranking);
-            $ranking->addGrade($this);
         }
 
         return $this;
@@ -103,9 +102,7 @@ class Grade
 
     public function removeRanking(Ranking $ranking): self
     {
-        if ($this->rankings->removeElement($ranking)) {
-            $ranking->removeGrade($this);
-        }
+        $this->rankings->removeElement($ranking);
 
         return $this;
     }

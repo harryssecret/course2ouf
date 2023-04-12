@@ -26,9 +26,10 @@ class StudentController extends AbstractController
 
     #[Route("/new", name: "app_student_new", methods: ["GET", "POST"])]
     public function new(
-        Request $request,
+        Request           $request,
         StudentRepository $studentRepository
-    ): Response {
+    ): Response
+    {
         $student = new Student();
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
@@ -67,10 +68,11 @@ class StudentController extends AbstractController
 
     #[Route("/edit/{id}", name: "app_student_edit", methods: ["GET", "POST"])]
     public function edit(
-        Request $request,
-        Student $student,
+        Request           $request,
+        Student           $student,
         StudentRepository $studentRepository
-    ): Response {
+    ): Response
+    {
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 
@@ -92,10 +94,11 @@ class StudentController extends AbstractController
 
     #[Route("/delete/{id}", name: "app_student_delete", methods: ["POST"])]
     public function delete(
-        Request $request,
-        Student $student,
+        Request           $request,
+        Student           $student,
         StudentRepository $studentRepository
-    ): Response {
+    ): Response
+    {
         if (
             $this->isCsrfTokenValid(
                 "delete" . $student->getId(),
@@ -126,10 +129,7 @@ class StudentController extends AbstractController
                 $generator::TYPE_CODE_128
             );
             $encodedBarcode = base64_encode($barcode);
-            array_push(
-                $barcodes,
-                ["image" => $encodedBarcode, "studentName" => $student->getFirstname() . " " . $student->getLastname()],
-            );
+            $barcodes[] = ["image" => $encodedBarcode, "studentName" => $student->getFirstname() . " " . $student->getLastname()];
         }
 
         $html = $this->renderView("student/barcode.html.twig", [
