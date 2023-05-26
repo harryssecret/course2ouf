@@ -1,0 +1,14 @@
+import: 
+  - recipe/symfony.php
+
+config:
+  repository: 'https://github.com/harryssecret/course2ouf.git'
+
+hosts:
+
+tasks:
+  build:
+    - run: uptime  
+
+after:
+  deploy:failed: deploy:unlock
