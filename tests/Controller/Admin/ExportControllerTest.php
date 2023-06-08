@@ -12,6 +12,6 @@ class ExportControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/admin/export');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello World');
+        $this->assertSelectorTextContains('h1', 'Exporter');
     }
 }

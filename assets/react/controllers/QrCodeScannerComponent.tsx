@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback, useLayoutEffect, useState, useRef } from "react";
+import Quagga from "@ericblade/quagga2";
 
 export default function () {
   return (

@@ -12,6 +12,6 @@ class ScanControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/admin/scan');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello World');
+        $this->assertSelectorTextContains('h1', 'Scan');
     }
 }

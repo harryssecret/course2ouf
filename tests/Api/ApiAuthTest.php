@@ -12,6 +12,7 @@ class ApiAuthTest extends ApiTestCase
     use RefreshDatabaseTrait;
     private $entityManager;
     private string $apiToken;
+
     public function testAuth(UserPasswordHasherInterface $us): void
     {
         $client = static::createClient();

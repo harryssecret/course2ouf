@@ -12,6 +12,6 @@ class GradeControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/admin/grade');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello World');
+        $this->assertSelectorTextContains('h1', 'Grade index');
     }
 }
