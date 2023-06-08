@@ -38,9 +38,12 @@ jobs:
         with:
           files: "composer.json"
 
+      - name: Dump .env files
+        run: composer dump-env prod
+
       - name: Run composer install if composer.json exists
         if: steps.check_files.outputs.files_exists == 'true'
-        run: composer validate --no-check-publish && composer install --prefer-dist --no-progress --no-dev --optimize-autoloader
+        run: composer validate --no-check-publish && APP_ENV=prod composer install --prefer-dist --no-progress --no-dev --optimize-autoloader
 
       - name: Build production bundle
         uses: Borales/actions-yarn@v4
