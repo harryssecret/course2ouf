@@ -47,14 +47,14 @@ jobs:
         with:
           cmd: build
 
-      - name: Remove node_modules
-        run: rm -rf node_modules
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: php-app
-          path: .
+          path: |
+            .
+            !node_modules/
+            !managetacourse-client/
 
   deploy:
     runs-on: ubuntu-latest
