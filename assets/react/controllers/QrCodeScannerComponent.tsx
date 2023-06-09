@@ -44,7 +44,7 @@ const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected }) => {
 
   useEffect(() => {
     if (!scannerRef.current) {
-      throw new Error("");
+      throw new Error("Error trying to access scanner ref.");
     }
 
     Quagga.init(
@@ -57,6 +57,8 @@ const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected }) => {
       },
       (err) => {
         Quagga.onProcessed(handleProcessed);
+
+        console.error("Error starting QuaggaJS : ", err)
       }
     );
   });
