@@ -70,7 +70,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/amphp/dns" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/console" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/amphp/http-client" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/sensio/framework-extra-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/uid" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/amphp/parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-kernel" />
@@ -181,6 +180,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mercure" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mercure-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-react" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-php83" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/stimulus-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

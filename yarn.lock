@@ -1626,14 +1626,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@symfony/stimulus-bundle@file:vendor/symfony/stimulus-bundle/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 1.0.0
+  resolution: "@symfony/stimulus-bundle@file:vendor/symfony/stimulus-bundle/assets#vendor/symfony/stimulus-bundle/assets::hash=86b346&locator=root-workspace-0b6124%40workspace%3A."
+  peerDependencies:
+    "@hotwired/stimulus": ^3.0.0
+    "@symfony/stimulus-bridge": ^3.2.0
+  checksum: 4d866dcba54b05cf9b00b765a823e875f2c94b8be9377660b535df176faefc85d6bb41fefe2f4e5d0f51cae8dbd5a94947e1eac173326977ecae0abcc392cff0
+  languageName: node
+  linkType: hard
+
 "@symfony/ux-react@file:vendor/symfony/ux-react/assets::locator=root-workspace-0b6124%40workspace%3A.":
   version: 1.0.0
-  resolution: "@symfony/ux-react@file:vendor/symfony/ux-react/assets#vendor/symfony/ux-react/assets::hash=563b91&locator=root-workspace-0b6124%40workspace%3A."
+  resolution: "@symfony/ux-react@file:vendor/symfony/ux-react/assets#vendor/symfony/ux-react/assets::hash=bef376&locator=root-workspace-0b6124%40workspace%3A."
   peerDependencies:
     "@hotwired/stimulus": ^3.0.0
     react: ^18.0
     react-dom: ^18.0
-  checksum: 47feb1b305c71caa6f8c55a3242f66e2118291985198ad5006a445aa39fda8674f2c7f4b09a26479451f66589cdfa910d7b7fc31f56139cb4f48857be83053be
+  checksum: 8558f9a48fbb2d86538052be3c57ddbdd385114c40e4025bcba64712532a2c5d1426218411af6bcfe9fbbaad8c3742fa7df4c26ebba79085b807bb4cb0f2b33f
   languageName: node
   linkType: hard
 
@@ -6910,6 +6920,7 @@ __metadata:
     "@hotwired/stimulus": ^3.0.0
     "@prettier/plugin-php": ^0.19.2
     "@symfony/stimulus-bridge": ^3.2.0
+    "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets"
     "@symfony/ux-react": "file:vendor/symfony/ux-react/assets"
     "@symfony/webpack-encore": ^4.0.0
     "@tailwindcss/typography": ^0.5.8

@@ -1,36 +1,5 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import Quagga, {QuaggaJSResultObject} from "@ericblade/quagga2";
-
-export default function () {
-  const [isScannerActive, setIsScannerActive] = useState(false);
-  const [results, setResults] = useState<string[]>([]);
-
-  const handleBtnClick = () => setIsScannerActive(!isScannerActive);
-
-  const handleOnDetected = (result: string) => {setResults([...results, result])}
-
-  return (
-    <div>
-      <h1>Scanner</h1>
-
-      <section>
-        <h2>Actions</h2>
-        <div>
-          <button onClick={handleBtnClick} className="btn-primary btn">
-            {isScannerActive ? "Désactiver" : "Activer"} la caméra
-          </button>
-        </div>
-      </section>
-
-      {
-        isScannerActive && <Scanner isActive={isScannerActive} onDetected={handleOnDetected} constraints={defaultConstraints}/>
-      }
-
-      <h1>Résultats</h1>
-      <Results results={results}/>
-    </div>
-  );
-}
+import React, {useCallback, useEffect, useRef} from "react";
+import Quagga, {QuaggaJSResultObject, QuaggaJSResultObject_CodeResult} from "@ericblade/quagga2";
 
 const defaultConstraints = {
   width: 640,
@@ -40,17 +9,16 @@ const defaultConstraints = {
 type ScannerProps = {
   isActive: boolean;
   onDetected: (result: string) => void;
-  constraints: {
+  constraints?: {
     width: number;
     height: number;
   }
 };
 
-const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected, constraints = defaultConstraints }) => {
+export const Scanner: React.FC<ScannerProps> = ({isActive, onDetected, constraints = defaultConstraints}) => {
   const scannerRef = useRef<HTMLDivElement>(null);
 
-  const getMedian = (arr: any[]) => {
-    console.log(arr)
+  const getMedian = (arr: number[]) => {
     arr.sort((a, b) => a - b);
     const half = Math.floor(arr.length / 2);
     if (arr.length % 2 === 1) {
@@ -59,15 +27,15 @@ const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected, constraints = d
     return (arr[half - 1] + arr[half]) / 2;
   }
 
-  const  getMedianOfCodeErrors = (decodedCodes: any[]) =>  {
-    console.log(decodedCodes)
-    const errors = decodedCodes.filter(x => x.error !== undefined).map(x => x.error);
-    return getMedian(errors);
+  const getMedianOfCodeErrors = (decodedCodes: QuaggaJSResultObject_CodeResult["decodedCodes"]) => {
+    const codes = decodedCodes.filter(x => typeof x.error === 'number')
+    const errorsMargin = codes.map(x => x.error as number)
+    return getMedian(errorsMargin);
   }
 
   const checkErrors = useCallback((result: QuaggaJSResultObject) => {
-    const err = getMedianOfCodeErrors(result.codeResult.decodedCodes)
-    console.log(err)
+      const err = getMedianOfCodeErrors(result.codeResult.decodedCodes)
+      console.log(err)
 
       if (err < 0.25 && result.codeResult.code) {
         onDetected(result.codeResult.code)
@@ -86,14 +54,14 @@ const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected, constraints = d
         result.boxes
           .filter((box) => box !== result.box)
           .forEach((box) => {
-            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
+            Quagga.ImageDebug.drawPath(box, {x: 0, y: 1}, drawingCtx, {
               color: "purple",
               lineWidth: 2,
             });
           });
       }
       if (result.box) {
-        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: 'blue', lineWidth: 2 });
+        Quagga.ImageDebug.drawPath(result.box, {x: 0, y: 1}, drawingCtx, {color: 'blue', lineWidth: 2});
       }
       if (result.codeResult && result.codeResult.code) {
         drawingCtx.font = "24px Arial";
@@ -117,8 +85,8 @@ const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected, constraints = d
             ...constraints
           }
         },
-       locate: true,
-       locator: {
+        locate: true,
+        locator: {
           patchSize: 'medium',
           halfSample: true
         },
@@ -146,14 +114,7 @@ const Scanner: React.FC<ScannerProps> = ({ isActive, onDetected, constraints = d
   }, [scannerRef, checkErrors, constraints]);
 
   return <div className={"relative"} ref={scannerRef}>
-    <canvas className={"absolute top-0 border-2 border-green-400 drawingBuffer"} width={constraints.width} height={constraints.height}  />
+    <canvas className={"absolute top-0 border-2 border-green-400 drawingBuffer"} width={constraints.width}
+            height={constraints.height}/>
   </div>;
 };
-
-const Results = ({results}: {results: string[]}) => <ul className={"menu bg-base-200 w-56 rounded-box"}>
-  {results.map((result, i) => {
-    return (
-      <li key={i}>{result}</li>
-    )
-  })}
-</ul>;
