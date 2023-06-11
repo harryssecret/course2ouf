@@ -113,8 +113,8 @@ export const Scanner: React.FC<ScannerProps> = ({isActive, onDetected, constrain
     }
   }, [scannerRef, checkErrors, constraints]);
 
-  return <div className={"relative"} ref={scannerRef}>
-    <canvas className={"absolute top-0 border-2 border-green-400 drawingBuffer"} width={constraints.width}
+  return <div className={"relative w-[640px] h-[480px]"} ref={scannerRef}>
+    <canvas className={"absolute top-0 border-2 border-green-400 drawingBuffer w-[640px] h-[480px]"} width={constraints.width}
             height={constraints.height}/>
   </div>;
 };

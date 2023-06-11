@@ -45,14 +45,17 @@
             <div class="flex-none">
                 <ul class="menu menu-horizontal p-0">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <p>connecté</p>
+                        <li>
+                            <a class="btn" href="{{ path('app_logout') }}">
+                                <iconify-icon icon="material-symbols:logout" width="20" height="20"></iconify-icon>
+                                Se déconnecter
+                            </a>
+                        </li>
                     {% else %}
                         <li>
-                            <a href="/login">Se connecter</a>
+                            <a class="btn" href="{{ path('app_login') }}">Se connecter</a>
                         </li>
                     {% endif %}
-
-
                 </ul>
             </div>
         </nav>
@@ -100,6 +103,12 @@
 
                     <iconify-icon icon="mdi:database-import-outline" width="32" height="32"></iconify-icon>
                     <span>Importer</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('app_scan') }}">
+                    <iconify-icon icon="mdi:line-scan" width="32" height="32"></iconify-icon>
+                    <span>Scanner</span>
                 </a>
             </li>
         </ul>
