@@ -13,5 +13,7 @@ class ExportControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Exporter');
+
+        $crawler->filter('a.btn')->first();
     }
 }

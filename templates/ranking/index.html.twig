@@ -11,7 +11,7 @@ block body %}
     <a class="btn" href="rankBy=grade">Trier en fonction des classes</a>
 </div>
 <br />
-<table class="table">
+<table class="table w-full">
     <thead>
         <tr>
             <th>Id</th>
@@ -30,11 +30,11 @@ block body %}
                 {{ ranking.Student }}
             </td>
             <td>{{ ranking.Student.Grade }}</td>
-            <td>
-                <a href="{{ path('app_ranking_show', { id: ranking.id }) }}"
+            <td class="btn-group">
+                <a class="btn btn-primary" href="{{ path('app_ranking_show', { id: ranking.id }) }}"
                     >show</a
                 >
-                <a href="{{ path('app_ranking_edit', { id: ranking.id }) }}"
+                <a class="btn" href="{{ path('app_ranking_edit', { id: ranking.id }) }}"
                     >edit</a
                 >
             </td>
