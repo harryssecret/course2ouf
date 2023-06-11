@@ -25,14 +25,14 @@ class Ranking
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'H:i:s'])]
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $endrun = null;
+    private ?\DateTimeInterface $endRun = null;
 
     #[ORM\ManyToOne(inversedBy: "rankings")]
-    private ?Race $Race = null;
+    private ?Race $race = null;
 
     #[Groups(['read', 'write'])]
     #[ORM\ManyToOne(inversedBy: "rankings")]
-    private ?Student $Student = null;
+    private ?Student $student = null;
 
 
     public function __construct()
@@ -45,38 +45,38 @@ class Ranking
         return $this->id;
     }
 
-    public function getEndrun(): ?\DateTimeInterface
+    public function getEndRun(): ?\DateTimeInterface
     {
-        return $this->endrun;
+        return $this->endRun;
     }
 
-    public function setEndrun(\DateTimeInterface $endrun): self
+    public function setEndRun(\DateTimeInterface $endRun): self
     {
-        $this->endrun = $endrun;
+        $this->endRun = $endRun;
 
         return $this;
     }
 
     public function getRace(): ?Race
     {
-        return $this->Race;
+        return $this->race;
     }
 
-    public function setRace(?Race $Race): self
+    public function setRace(?Race $race): self
     {
-        $this->Race = $Race;
+        $this->race = $race;
 
         return $this;
     }
 
     public function getStudent(): ?Student
     {
-        return $this->Student;
+        return $this->student;
     }
 
-    public function setStudent(?Student $Student): self
+    public function setStudent(?Student $student): self
     {
-        $this->Student = $Student;
+        $this->student = $student;
 
         return $this;
     }

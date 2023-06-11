@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StudentRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Uid\Ulid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -37,11 +38,13 @@ class Student
     private ?string $gender = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $TimeGoal = null;
+    private ?\DateTimeInterface $timeGoal = null;
 
+    #[Ignore()]
     #[ORM\ManyToOne(inversedBy: "students")]
-    private ?Grade $Grade = null;
+    private ?Grade $grade = null;
 
+    #[Ignore]
     #[ORM\OneToMany(mappedBy: "Student", targetEntity: Ranking::class)]
     private ?Collection $rankings = null;
 
@@ -85,25 +88,25 @@ class Student
 
     public function getTimeGoal(): ?\DateTimeInterface
     {
-        return $this->TimeGoal;
+        return $this->timeGoal;
     }
 
-    public function setTimeGoal(\DateTimeInterface $TimeGoal): self
+    public function setTimeGoal(\DateTimeInterface $timeGoal): self
     {
-        $this->TimeGoal = $TimeGoal;
+        $this->timeGoal = $timeGoal;
 
         return $this;
     }
 
     public function getGrade(): ?Grade
     {
-        return $this->Grade;
+        return $this->grade;
     }
 
-    public function setGrade(?Grade $Grade): self
+    public function setGrade(?Grade $grade): self
     {
 
-        $this->Grade = $Grade;
+        $this->grade = $grade;
 
         return $this;
     }

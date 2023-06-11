@@ -26,7 +26,7 @@ class Race
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $start = null;
 
-    #[ORM\OneToMany(mappedBy: "Race", targetEntity: Ranking::class)]
+    #[ORM\OneToMany(mappedBy: "race", targetEntity: Ranking::class)]
     private Collection $rankings;
 
     #[ORM\Column(length: 255)]
