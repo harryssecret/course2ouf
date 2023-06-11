@@ -8,14 +8,15 @@
         <h2 class="text-xl">Actions</h2>
         <div>
             <a class="btn" href="{{ path('app_race_new') }}">Nouvelle course</a>
-            </div>  
+            </div>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Start</th>
-                <th>actions</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,9 +24,10 @@
             <tr>
                 <td>{{ race.id }}</td>
                 <td>{{ race.start ? race.start|date('d-m-Y') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_race_show', {'id': race.id}) }}">show</a>
-                    <a href="{{ path('app_race_edit', {'id': race.id}) }}">edit</a>
+                <td>{{ race.status }}</td>
+                <td class="btn-group">
+                    <a class="btn" href="{{ path('app_race_show', {'id': race.id}) }}">show</a>
+                    <a class="btn" href="{{ path('app_race_edit', {'id': race.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

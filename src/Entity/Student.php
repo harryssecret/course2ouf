@@ -16,6 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
+    const GENDER_MALE = "Homme";
+    const GENDER_FEMALE = "Femme";
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -99,6 +102,7 @@ class Student
 
     public function setGrade(?Grade $Grade): self
     {
+
         $this->Grade = $Grade;
 
         return $this;
@@ -106,6 +110,9 @@ class Student
 
     public function setGender(string $gender): self
     {
+        if (!in_array($gender, array(self::GENDER_FEMALE, self::GENDER_MALE))) {
+            throw new \InvalidArgumentException("Invalid gender");
+        }
         $this->gender = $gender;
 
         return $this;

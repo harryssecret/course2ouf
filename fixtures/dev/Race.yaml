@@ -1,3 +1,4 @@
 App\Entity\Race:
     race_{1..10}:
         start: <dateTime()>
+        status: <randomElement(["started", "finished", "not_started"])>

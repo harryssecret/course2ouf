@@ -40,7 +40,7 @@ class RaceController extends AbstractController
             );
         }
 
-        return $this->renderForm("race/new.html.twig", [
+        return $this->render("race/new.html.twig", [
             "race" => $race,
             "form" => $form,
         ]);
@@ -73,7 +73,7 @@ class RaceController extends AbstractController
             );
         }
 
-        return $this->renderForm("race/edit.html.twig", [
+        return $this->render("race/edit.html.twig", [
             "race" => $race,
             "form" => $form,
         ]);

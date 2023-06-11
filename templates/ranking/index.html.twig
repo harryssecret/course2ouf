@@ -29,6 +29,7 @@ block body %}
             <td>
                 {{ ranking.Student }}
             </td>
+            <td>{{ ranking.Student.Grade }}</td>
             <td>
                 <a href="{{ path('app_ranking_show', { id: ranking.id }) }}"
                     >show</a

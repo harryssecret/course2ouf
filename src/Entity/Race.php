@@ -14,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RaceRepository::class)]
 class Race
 {
+    const STATUS_RACE_STARTED = "started";
+    const STATUS_RACE_FINISHED = "finished";
+    const STATUS_RACE_NOT_STARTED = "not_started";
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,6 +28,9 @@ class Race
 
     #[ORM\OneToMany(mappedBy: "Race", targetEntity: Ranking::class)]
     private Collection $rankings;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
     public function __construct()
     {
@@ -80,5 +87,20 @@ class Race
     public function __toString()
     {
         return $this->start->format('d/m/Y');
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        if (!in_array($status, array(self::STATUS_RACE_FINISHED, self::STATUS_RACE_STARTED, self::STATUS_RACE_NOT_STARTED))) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
+        $this->status = $status;
+
+        return $this;
     }
 }
