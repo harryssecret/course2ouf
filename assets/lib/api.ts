@@ -1,4 +1,8 @@
+import {Race} from "../react/controllers/components/EventPicker";
+import {Student} from "../react/controllers/BarcodeScanner";
+
 const apiEndpoint = location.origin
+
 
 async function getTokenOfUser(username: string, password: string) {
   const req = await fetch(`${apiEndpoint}/api/auth`, {
@@ -36,7 +40,12 @@ export async function authUser(username: string, password: string) {
   }
 }
 
-export async function postResult(result: string, raceId: number, studentId: number, token: string) {
+export async function postResult(raceId: number, studentId: number) {
+  const token = getToken()
+  if (!token) {
+    throw new Error("No token was set.")
+  }
+
   const body = JSON.stringify({
     "endrun": new Date().toISOString(),
     "race": raceId.toString(),
@@ -47,17 +56,36 @@ export async function postResult(result: string, raceId: number, studentId: numb
     'Content-Type': 'application/json',
     'Accept': 'application/ld+json'
   }
-  const req = await fetch(`${apiEndpoint}/api/`, {body, headers})
-  return await req.json();
+  const res = await fetch(`${apiEndpoint}/api/rankings`, {body, headers})
+  return await res.json();
 }
 
-async function getStudentByBarcode(code: string, token: string) {
+export async function getStudentById(id: string): Promise<Student> {
+  const token = getToken()
+  if (!token) {
+    throw new Error("No token was set.")
+  }
   const headers = {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json',
     'Accept': 'application/ld+json'
   }
-  const body = JSON.stringify({
 
-  })
+  const res = await fetch(`${apiEndpoint}/api/students/${id}`)
+  return await res.json()
+}
+
+export async function getRaces(): Promise<Race[]> {
+  const token = getToken()
+  if (!token) {
+    throw new Error("No token was set.")
+  }
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+  const res = await fetch(`${apiEndpoint}/api/races`, {headers})
+  const races = await res.json();
+  return races;
 }

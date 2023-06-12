@@ -125,11 +125,11 @@ class StudentController extends AbstractController
         $barcodes = [];
         foreach ($students as $student) {
             $barcode = $generator->getBarcode(
-                $student->getBarcodeId(),
+                $student->getId(),
                 $generator::TYPE_CODE_128
             );
             $encodedBarcode = base64_encode($barcode);
-            $barcodes[] = ["image" => $encodedBarcode, "studentName" => $student->getFirstname() . " " . $student->getLastname()];
+            $barcodes[] = ["image" => $encodedBarcode, "studentName" => $student->getFirstname() . " " . $student->getLastname() ];
         }
 
         $html = $this->renderView("student/barcode.html.twig", [

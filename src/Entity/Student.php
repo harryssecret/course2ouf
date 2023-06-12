@@ -2,7 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use App\Controller\Api\GetStudentByBarcodeController;
 use App\Repository\StudentRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
@@ -12,7 +17,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource()]
+#[ApiResource(
+)]
 #[ORM\Table(name: "tbl_student")]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
@@ -24,7 +30,6 @@ class Student
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
 
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
@@ -49,6 +54,7 @@ class Student
     private ?Collection $rankings = null;
 
     #[ORM\Column(type: 'ulid', nullable: true)]
+
     private ?Ulid $barcodeId = null;
 
     public function __construct()
