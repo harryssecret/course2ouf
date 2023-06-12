@@ -4,7 +4,7 @@ namespace App\Tests\Api;
 
 use PHPUnit\Framework\TestCase;
 
-class ApiRaceTest extends TestCase
+class ApiRaceTest extends AbstractApiTest
 {
     public function testGetRace()
     {

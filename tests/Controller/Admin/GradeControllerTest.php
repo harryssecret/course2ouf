@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class GradeControllerTest extends WebTestCase
 {
+
+    public function testAdminAuth(): void {
+
+    }
     public function testSomething(): void
     {
         $client = static::createClient();

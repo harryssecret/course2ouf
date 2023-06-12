@@ -6,7 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ExportControllerTest extends WebTestCase
 {
-    public function testSomething(): void
+    public function testAdminAuth(): void {
+
+    }
+
+    public function testExportFunc(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/admin/export');
